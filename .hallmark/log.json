@@ -1,0 +1,26 @@
+[
+  {
+    "shape": "conversation-led studio",
+    "theme": "custom",
+    "axes": "dark/grotesk-sans/cool",
+    "hero": "broad headline and genuine demo preview",
+    "nav": "inline",
+    "footer": "contact directory",
+    "imagery": "approved video still",
+    "sections": [
+      "offer",
+      "unanswered-call problem",
+      "custom services",
+      "genuine demo",
+      "pilot",
+      "contact"
+    ],
+    "signature": "open O with continuation stroke",
+    "waived": [],
+    "prompt": "Orvanta company launch website",
+    "date": "2026-11-24",
+    "mode": "build",
+    "entry": "src/app/page.tsx",
+    "fingerprint": "navy-mint-conversation-studio-open-o"
+  }
+]

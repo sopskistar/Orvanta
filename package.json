@@ -1,0 +1,36 @@
+{
+  "name": "orvanta",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "node scripts/serve.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "qa": "node scripts/browser-qa.mjs",
+    "brand:export": "node scripts/export-brand.mjs",
+    "test:testimonials": "node --test scripts/testimonials.test.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^10.15.0",
+    "typescript": "^5.9.0",
+    "@eslint/js": "^10.0.0",
+    "@next/eslint-plugin-next": "16.4.6",
+    "typescript-eslint": "^8.74.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.0.0"
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T10:34:05Z",
+  "title": "Design System: Orvanta",
+  "extensions": {
+    "colorMeta": {
+      "navy": {
+        "role": "neutral",
+        "displayName": "Identity Navy",
+        "canonical": "#08111f",
+        "tonalRamp": [
+          "oklch(15% 0.0081 258.68)",
+          "oklch(26% 0.0178 258.68)",
+          "oklch(38% 0.0258 258.68)",
+          "oklch(49% 0.0323 258.68)",
+          "oklch(61% 0.0323 258.68)",
+          "oklch(72% 0.0274 258.68)",
+          "oklch(84% 0.0194 258.68)",
+          "oklch(95% 0.0065 258.68)"
+        ]
+      },
+      "navy-raised": {
+        "role": "neutral",
+        "displayName": "Raised Navy",
+        "canonical": "#142b42",
+        "tonalRamp": [
+          "oklch(15% 0.0129 250.12)",
+          "oklch(26% 0.0284 250.12)",
+          "oklch(38% 0.0413 250.12)",
+          "oklch(49% 0.0516 250.12)",
+          "oklch(61% 0.0516 250.12)",
+          "oklch(72% 0.0439 250.12)",
+          "oklch(84% 0.0310 250.12)",
+          "oklch(95% 0.0103 250.12)"
+        ]
+      },
+      "mint": {
+        "role": "primary",
+        "displayName": "Enquiry Mint",
+        "canonical": "#79dac3",
+        "tonalRamp": [
+          "oklch(15% 0.0246 176.55)",
+          "oklch(26% 0.0541 176.55)",
+          "oklch(38% 0.0787 176.55)",
+          "oklch(49% 0.0984 176.55)",
+          "oklch(61% 0.0984 176.55)",
+          "oklch(72% 0.0837 176.55)",
+          "oklch(84% 0.0591 176.55)",
+          "oklch(95% 0.0197 176.55)"
+        ]
+      },
+      "mint-hover": {
+        "role": "primary",
+        "displayName": "Mint Hover",
+        "canonical": "#a4e8d7",
+        "tonalRamp": [
+          "oklch(15% 0.0181 177.25)",
+          "oklch(26% 0.0397 177.25)",
+          "oklch(38% 0.0578 177.25)",
+          "oklch(49% 0.0722 177.25)",
+          "oklch(61% 0.0722 177.25)",
+          "oklch(72% 0.0614 177.25)",
+          "oklch(84% 0.0433 177.25)",
+          "oklch(95% 0.0144 177.25)"
+        ]
+      },
+      "mint-pressed": {
+        "role": "primary",
+        "displayName": "Mint Pressed",
+        "canonical": "#65c7af",
+        "tonalRamp": [
+          "oklch(15% 0.0249 175.47)",
+          "oklch(26% 0.0548 175.47)",
+          "oklch(38% 0.0798 175.47)",
+          "oklch(49% 0.0997 175.47)",
+          "oklch(61% 0.0997 175.47)",
+          "oklch(72% 0.0847 175.47)",
+          "oklch(84% 0.0598 175.47)",
+          "oklch(95% 0.0199 175.47)"
+        ]
+      },
+      "light": {
+        "role": "neutral",
+        "displayName": "Cool Light",
+        "canonical": "#f3f6fb",
+        "tonalRamp": [
+          "oklch(15% 0.0019 260.73)",
+          "oklch(26% 0.0041 260.73)",
+          "oklch(38% 0.0059 260.73)",
+          "oklch(49% 0.0074 260.73)",
+          "oklch(61% 0.0074 260.73)",
+          "oklch(72% 0.0063 260.73)",
+          "oklch(84% 0.0044 260.73)",
+          "oklch(95% 0.0015 260.73)"
+        ]
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "Quiet Blue Grey",
+        "canonical": "#b7c9d5",
+        "tonalRamp": [
+          "oklch(15% 0.0065 236.90)",
+          "oklch(26% 0.0142 236.90)",
+          "oklch(38% 0.0207 236.90)",
+          "oklch(49% 0.0259 236.90)",
+          "oklch(61% 0.0259 236.90)",
+          "oklch(72% 0.0220 236.90)",
+          "oklch(84% 0.0155 236.90)",
+          "oklch(95% 0.0052 236.90)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Navy Divider",
+        "canonical": "#324451",
+        "tonalRamp": [
+          "oklch(15% 0.0080 240.06)",
+          "oklch(26% 0.0176 240.06)",
+          "oklch(38% 0.0256 240.06)",
+          "oklch(49% 0.0320 240.06)",
+          "oklch(61% 0.0320 240.06)",
+          "oklch(72% 0.0272 240.06)",
+          "oklch(84% 0.0192 240.06)",
+          "oklch(95% 0.0064 240.06)"
+        ]
+      },
+      "warm-white": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "canonical": "#f7f7f2",
+        "tonalRamp": [
+          "oklch(15% 0.0017 106.52)",
+          "oklch(26% 0.0036 106.52)",
+          "oklch(38% 0.0053 106.52)",
+          "oklch(49% 0.0066 106.52)",
+          "oklch(61% 0.0066 106.52)",
+          "oklch(72% 0.0056 106.52)",
+          "oklch(84% 0.0040 106.52)",
+          "oklch(95% 0.0013 106.52)"
+        ]
+      },
+      "light-muted": {
+        "role": "neutral",
+        "displayName": "Reading Slate",
+        "canonical": "#465664",
+        "tonalRamp": [
+          "oklch(15% 0.0076 244.97)",
+          "oklch(26% 0.0168 244.97)",
+          "oklch(38% 0.0244 244.97)",
+          "oklch(49% 0.0305 244.97)",
+          "oklch(61% 0.0305 244.97)",
+          "oklch(72% 0.0259 244.97)",
+          "oklch(84% 0.0183 244.97)",
+          "oklch(95% 0.0061 244.97)"
+        ]
+      },
+      "light-divider": {
+        "role": "neutral",
+        "displayName": "Reading Divider",
+        "canonical": "#cbd1ce",
+        "tonalRamp": [
+          "oklch(15% 0.0019 164.91)",
+          "oklch(26% 0.0042 164.91)",
+          "oklch(38% 0.0062 164.91)",
+          "oklch(49% 0.0077 164.91)",
+          "oklch(61% 0.0077 164.91)",
+          "oklch(72% 0.0066 164.91)",
+          "oklch(84% 0.0046 164.91)",
+          "oklch(95% 0.0015 164.91)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero heading."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Ordinary card and subsection headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading copy."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Introductory supporting copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Captions, footer detail and small links."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Primary action labels."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Main header navigation."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "dur-micro",
+        "value": "140ms",
+        "purpose": "Button, underline and navigation color changes."
+      },
+      {
+        "name": "dur-short",
+        "value": "240ms",
+        "purpose": "Mobile menu-line transforms."
+      },
+      {
+        "name": "dur-long",
+        "value": "600ms",
+        "purpose": "Home heading arrival."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Home heading arrival easing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "max-tablet",
+        "value": "1000px"
+      },
+      {
+        "name": "max-stack",
+        "value": "760px"
+      },
+      {
+        "name": "max-phone",
+        "value": "600px"
+      },
+      {
+        "name": "max-small-phone",
+        "value": "420px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Mint primary action with a play icon from the existing demo action.",
+      "html": "<a class=\"ds-button\" href=\"/demo/\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M8 4.8a1 1 0 0 1 1.5-.86l11 7.2a1 1 0 0 1 0 1.72l-11 7.2a1 1 0 0 1-1.5-.86Z\"/></svg>Watch the demo</a>",
+      "css": ".ds-button{font-family:var(--font-body, \"Albert Sans\", \"DejaVu Sans\", sans-serif);min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:var(--space-sm, 12px);background:var(--button-bg, #79dac3);color:var(--button-fg, #08111f);border:1px solid var(--button-bg, #79dac3);padding:var(--space-sm, 12px) var(--space-lg, 24px);border-radius:var(--radius-button, 6px);text-decoration:none;font-size:var(--text-md, 1rem);font-weight:600;line-height:1.5;transition:background-color var(--dur-micro, 140ms)}.ds-button:hover{background:var(--button-hover, #a4e8d7);border-color:var(--button-hover, #a4e8d7)}.ds-button:active{background:var(--button-active, #65c7af);border-color:var(--button-active, #65c7af)}.ds-button:focus-visible{outline:3px solid var(--color-focus, #79dac3);outline-offset:5px;}@media(prefers-reduced-motion:reduce){.ds-button{transition:none}}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Underlined secondary action inheriting the reading region text color.",
+      "html": "<a class=\"ds-text-link\" href=\"/contact/\">Discuss your setup</a>",
+      "css": ".ds-text-link{font-family:var(--font-body, \"Albert Sans\", \"DejaVu Sans\", sans-serif);display:inline-flex;min-height:44px;align-items:center;color:var(--color-ink, #f3f6fb);font-size:1rem;line-height:1.6;font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.25em;text-decoration-color:var(--color-rule, #324451);transition:text-decoration-color var(--dur-micro, 140ms)}.ds-text-link:hover{text-decoration-color:currentColor}.ds-text-link:focus-visible{outline:3px solid var(--color-focus, #79dac3);outline-offset:5px;}@media(prefers-reduced-motion:reduce){.ds-text-link{transition:none}}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Desktop header links with a current page and outlined contact action.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a href=\"/services/\" aria-current=\"page\">Services</a><a href=\"/demo/\">The demo</a><a href=\"/contact/\">Contact</a><a class=\"ds-nav-cta\" href=\"/contact/\">Discuss your setup</a></nav>",
+      "css": ".ds-nav{font-family:var(--font-body, \"Albert Sans\", \"DejaVu Sans\", sans-serif);display:flex;align-items:center;gap:var(--space-xl, 40px);background:var(--color-paper, #08111f);color:var(--color-ink, #f3f6fb);line-height:1.6}.ds-nav a{color:inherit;font-size:.9375rem;padding-block:var(--space-sm, 12px);text-decoration:none;text-underline-offset:.5em;transition:color var(--dur-micro, 140ms)}.ds-nav a:hover{color:var(--mint, #79dac3)}.ds-nav a[aria-current=\"page\"]{text-decoration:underline;text-decoration-color:var(--mint, #79dac3)}.ds-nav .ds-nav-cta{border:1px solid var(--divider, #324451);border-radius:var(--radius-button, 6px);padding:var(--space-sm, 12px) var(--space-lg, 24px)}.ds-nav .ds-nav-cta:hover{border-color:var(--mint, #79dac3)}.ds-nav a:focus-visible{outline:3px solid var(--color-focus, #79dac3);outline-offset:5px;}@media(max-width:1000px){.ds-nav{gap:var(--space-lg, 24px)}}@media(prefers-reduced-motion:reduce){.ds-nav a{transition:none}}"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "service-card",
+      "description": "Linked service container with muted description and a mint underline revealed on hover.",
+      "html": "<a class=\"ds-card\" href=\"/services/#websites\"><h3>Business websites</h3><p>A clear home for your business and a useful next step for visitors.</p><span class=\"ds-card-link\">Explore website design</span></a>",
+      "css": ".ds-card{font-family:var(--font-body, \"Albert Sans\", \"DejaVu Sans\", sans-serif);display:flex;flex-direction:column;background:var(--navy-raised, #142b42);color:var(--light, #f3f6fb);padding:var(--space-xl, 40px);border-radius:var(--radius-card, 14px);text-decoration:none;line-height:1.6}.ds-card h3{margin:0 0 var(--space-md, 16px);font-size:var(--text-title, clamp(1.5rem,2.1vw,2rem));font-weight:500;line-height:1.22;letter-spacing:-.02em}.ds-card p{margin:0;color:var(--secondary, #b7c9d5);max-width:36ch;font-size:1rem}.ds-card-link{margin-top:auto;padding-top:var(--space-lg, 24px);color:var(--mint, #79dac3);font-size:var(--text-sm, .875rem);text-decoration:underline;text-underline-offset:.3em;text-decoration-color:transparent;transition:text-decoration-color var(--dur-micro, 140ms)}.ds-card:hover .ds-card-link{text-decoration-color:currentColor}.ds-card:focus-visible{outline:3px solid var(--color-focus, #79dac3);outline-offset:5px;}@media(max-width:420px){.ds-card{padding:var(--space-lg, 24px)}}@media(prefers-reduced-motion:reduce){.ds-card-link{transition:none}}"
+    },
+    {
+      "name": "Identity Wordmark",
+      "kind": "custom",
+      "refersTo": "brand",
+      "description": "The original open O and continuation stroke paired with the Orvanta wordmark.",
+      "html": "<a class=\"ds-brand\" href=\"/\" aria-label=\"Orvanta home\"><svg viewBox=\"0 0 48 48\" fill=\"none\" aria-hidden=\"true\"><path d=\"M35.3 12.7a16 16 0 1 0 0 22.6\" stroke=\"currentColor\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M24 24h18\" stroke=\"currentColor\" stroke-width=\"6\" stroke-linecap=\"round\"/></svg><span>Orvanta</span></a>",
+      "css": ".ds-brand{font-family:var(--font-body, \"Albert Sans\", \"DejaVu Sans\", sans-serif);display:inline-flex;align-items:center;gap:var(--space-sm, 12px);color:var(--light, #f3f6fb);font-size:1.9rem;font-weight:650;line-height:1;letter-spacing:-.035em;text-decoration:none}.ds-brand svg{display:block;flex-shrink:0;width:40px;height:40px;color:var(--mint, #79dac3)}.ds-brand:focus-visible{outline:3px solid var(--color-focus, #79dac3);outline-offset:5px;}@media(max-width:760px){.ds-brand{font-size:1.65rem}.ds-brand svg{width:34px;height:34px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Carry the enquiry forward",
+    "overview": "Orvanta is an assured, conversation-led studio. Deep navy gives the identity its presence; mint makes actions and the open O mark easy to find. Warm-white regions give longer explanations room to be read. The visual system supports a professional service business whose claims stay close to its actual demonstration.\n\nBroad, left-aligned Albert Sans headings sit above quieter explanatory text. Open spacing, asymmetric service emphasis and visible text links carry the page. The current build uses original vector identity and genuine demo imagery; its visual confidence does not depend on invented statistics or customer proof.",
+    "keyCharacteristics": [
+      "Deep navy identity with mint actions and warm-white reading regions.",
+      "One self-hosted sans family, broad headings and readable paragraph measures.",
+      "Restrained rectangular controls, softly rounded media and cards.",
+      "Flat tonal depth, visible focus and reduced-motion support."
+    ],
+    "rules": [
+      {
+        "name": "The Reading Surface Rule",
+        "body": "Warm-white reading regions switch text, dividers and focus to their light-surface assignments together.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Use Albert Sans for display, body and interface text; hierarchy comes from scale, weight and spacing.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tonal Depth Rule",
+        "body": "Use the raised navy surface and fine dividers for depth; the current system has no box shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the established navy, mint and warm-white surface roles.",
+      "Do keep explanations at the observed paragraph measures and allow headings to scale fluidly.",
+      "Do keep text links visibly underlined and preserve a visible keyboard focus outline.",
+      "Do retain the original open O mark and genuine demo imagery.",
+      "Do preserve native video controls and the reduced-motion override."
+    ],
+    "donts": [
+      "Don't add decorative gradients or shadow effects to the current flat surface system.",
+      "Don't replace the project font or recolor the approved identity.",
+      "Don't treat illustrative tonal ramps in the sidecar as additional implemented color tokens.",
+      "Don't introduce fabricated customer proof or results into visual components."
+    ]
+  }
+}
