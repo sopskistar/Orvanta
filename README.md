@@ -10,7 +10,7 @@ Built with Next.js App Router, TypeScript and React. The launch is a static expo
 - **Demo:** the supplied edited MP4 is copied unchanged to `public/demo/Orvanta_Receptionist_Demo.mp4`. One native player with controls, metadata preload, inline playback and no autoplay. The public heading is “Mia — cleaning enquiry demo”.
 - **Contact:** email links to `julianahonour@gmail.com`. There is no website submission form or automatic email service.
 - **Pending:** Retell telephone account verification, automatic enquiry emails and real booking. No connected webhook, database, CRM, calendar or admin view is exposed.
-- **Deployment:** Vercel is the intended host; Neon is intended for later enquiry storage only. Prepared and tested locally; this repository is not evidence of a public deployment. Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md).
+- **Deployment:** Cloudflare Pages Free is the intended initial host; Neon is intended for later enquiry storage only. Prepared and tested locally; this repository is not evidence of a public deployment. Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Run on Ubuntu / WSL
 
@@ -30,17 +30,18 @@ For the production export:
 npm run lint
 npm run typecheck
 npm run test:testimonials
+npm run test:config
 npm run build
 npm start
 ```
 
-The production output is `out/`. Keep Vercel’s Next.js Output Directory override off; its framework integration handles the export. `npm start` serves it locally, including video byte-range requests and the custom 404. It is a local preview server, not a hosting service. If port 3000 is occupied, stop the other server or use `PORT=3001 npm start`.
+The production output is `out/`. Use the Cloudflare Pages “Next.js (Static HTML Export)” preset, build command `npm run build` and output directory `out`. `npm start` serves it locally, including video byte-range requests and the custom 404. It is a local preview server, not a hosting service. If port 3000 is occupied, stop the other server or use `PORT=3001 npm start`.
 
 ## Settings
 
 Edit `src/lib/business.ts` for the default business email, description and demo paths. Optional public build settings are documented in `.env.example`. For local overrides, copy that file to `.env.local` and enter actual values. Never commit `.env.local` or credentials.
 
-Set `NEXT_PUBLIC_SITE_URL` to the actual public HTTPS origin after first deployment, then redeploy. This enables correct absolute social-image URLs, canonical URLs and sitemap entries. Vercel's production system hostname is also detected automatically. Without a known public URL the local build deliberately omits those URLs rather than inventing a domain.
+Set `NEXT_PUBLIC_SITE_URL` to the actual public HTTPS origin after first deployment, then redeploy. This enables correct absolute social-image URLs, canonical URLs and sitemap entries. Cloudflare Pages supplies its initial deployment URL automatically. Set the stable project `pages.dev` URL explicitly after the first deploy, because individual deployment URLs differ. Without a known public URL the local build deliberately omits those URLs rather than inventing a domain.
 
 ## Documentation
 

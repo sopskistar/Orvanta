@@ -14,7 +14,8 @@
     "check": "npm run lint && npm run typecheck && npm run build",
     "qa": "node scripts/browser-qa.mjs",
     "brand:export": "node scripts/export-brand.mjs",
-    "test:testimonials": "node --test scripts/testimonials.test.mjs"
+    "test:testimonials": "node --test scripts/testimonials.test.mjs",
+    "test:config": "node --test scripts/business-config.test.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

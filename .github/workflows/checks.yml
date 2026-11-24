@@ -15,4 +15,5 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test:testimonials
+      - run: npm run test:config
       - run: npm run build

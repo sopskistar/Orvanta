@@ -3,7 +3,7 @@
 ## Platform
 web
 ## Stack
-Next.js App Router, TypeScript, Vercel-compatible, explicitly requested by the user. No previous application framework exists.
+Next.js App Router, TypeScript, supported static export for Cloudflare Pages. Reuse the approved existing application without redesigning it.
 ## Users
 Cleaning company owners evaluating help with after-hours and unanswered-call enquiries. Retell support needs a public company URL for account verification.
 ## Product Purpose
@@ -19,6 +19,6 @@ Root Orvanta_Receptionist_Demo.mp4.mp4 is the supplied edited 117-second browser
 ## Accessibility & Inclusion
 Responsive phone/tablet/desktop, native video controls, keyboard focus, reduced motion, readable contrast.
 ## Launch decisions
-Vercel is the intended host. Neon is the intended database for later enquiry storage and automation; no database is needed for the marketing launch. Public demo copy uses “Mia — cleaning enquiry demo” and concise enquiry-capture language; the underlying supplied demo remains the same and is not paying-customer proof. Testimonials start empty and stay hidden until genuine complete reviews have publication approval.
+Cloudflare Pages Free is the intended initial host; no custom domain is required. Neon is the intended database for later enquiry storage and automation; no database is needed for the marketing launch. Public demo copy uses “Mia — cleaning enquiry demo” and concise enquiry-capture language; the underlying supplied demo remains the same and is not paying-customer proof. Testimonials start empty and stay hidden until genuine complete reviews have publication approval.
 ## Open decisions
 Domain email, public deployment hostname, future verified sender, client mappings and booking scope. None blocks launch.

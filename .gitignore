@@ -162,3 +162,7 @@ Orvanta_Receptionist_Demo.mp4.mp4
 *:Zone.Identifier
 .vercel/
 .impeccable/hook.cache.json
+# Local Cloudflare tooling state (if used for a later task)
+.wrangler/
+.dev.vars
+.dev.vars.*

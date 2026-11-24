@@ -1,11 +1,12 @@
 # Launch verification
 
-Current update verified locally on 24 November 2026. This is repository verification, not evidence of a published Vercel deployment. Vercel is the intended host; Neon is intended only for later enquiry storage.
+Cloudflare Pages preparation verified locally on 24 November 2026. This is repository verification, not evidence of a published Cloudflare deployment. Cloudflare Pages Free is the intended initial host; Neon remains only for later enquiry storage.
 
 ## Completed checks
 
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
+- `npm run test:config`: **3 tests passed** for automatic Pages URLs/host disclosure, stable-origin precedence and credential-free local configuration.
 - `npm run test:testimonials`: **4 tests passed**. Verified empty launch data produces no markup; unapproved/incomplete reviews stay hidden; approved review markup is semantic; review text is escaped and optional attribution stays optional.
 - `npm run build`: passed on Next.js 16.4.6, React 19.3.1, TypeScript 5.9.3 and Node 24.22.2. Home, Services, Demo, Contact, Privacy, robots, sitemap and custom 404 export into `out/`.
 - Browser QA against that production export: **154 checks passed**, zero page-runtime errors, 15 page captures and 15 distinct link targets. Evidence: local ignored `artifacts/qa/report.json` and screenshots.
@@ -23,11 +24,11 @@ Native video checks cover controls, metadata preload, inline playback, no autopl
 
 The home-page testimonial section has no DOM/heading/spacing while launch data is empty. A separate local-only HTML harness renders explicitly synthetic data to check the component's two-column desktop/tablet layout and single-column phone layout. Those captures are marked synthetic, stored in ignored `artifacts/qa/`, and never exposed through a website route. No synthetic review text is present in production HTML. The production data array stays empty. See `docs/TESTIMONIALS.md` for adding a real review with permission.
 
-Physical-device, other-browser-engine and screen-reader testing were not performed. Closed captions were not supplied or invented. Public-host access, actual sound on the visitor's device and email receipt remain part of the Vercel dashboard/public verification checklist.
+Physical-device, other-browser-engine and screen-reader testing were not performed. Closed captions were not supplied or invented. Public-host access, actual sound on the visitor's device and email receipt remain part of the Cloudflare Pages dashboard/public verification checklist.
 
-## Installed design checks
+## Prior design checks — interface preserved
 
-The existing DESIGN.md and source tokens govern this scoped update. No replacement identity, new font, new palette, new motion library or new design approval round was introduced.
+The following design-review results come from the preceding interface update. This hosting change does not edit the layout, styling, brand assets, demo copy or testimonial data. Fresh production-export screenshots were inspected as described above; no redesign or redundant design audit was introduced.
 
 - Hallmark static and rendered audit: **0 FAIL, 0 REFLEX, 7 WARN**. Five extra captures cover 1280/1440/1920 folds plus full desktop/phone pages.
 - The warnings concern existing short introductory measures, a headline max-width interpreted as another container, the approved headline/supporting-copy lengths and a 91-word screen window. Inspected renders remain readable; these are reported warnings, not a claimed warning-free result.
@@ -50,4 +51,10 @@ FFprobe reports 1920 × 1080 H.264, 30 fps, AAC audio, 117.121333 seconds and 4,
 
 Only the reviewed implementation, public brand/video/font assets, documentation and checks are intended for GitHub. No secrets, real `.env` files, identity documents, raw recordings, account screenshots, dependency trees or local QA fixtures are in the intended commit. `.env.example` contains descriptions/public settings only.
 
-A successful Git push is not a website publication. The remaining Vercel steps are in `docs/DEPLOYMENT.md`: import/connect the repository, use the Next.js preset, run `npm ci` and `npm run build`, keep the Output Directory override off, configure the public host disclosure, deploy and open the returned production URL in a signed-out/private browser. No database credentials are required. No paid plan, database, Calendly or email automation was created.
+A successful Git push is not a website publication. The remaining Cloudflare Pages steps are in `docs/DEPLOYMENT.md`: connect the repository, use Next.js (Static HTML Export), build with `npm run build`, publish `out`, then open the returned stable `pages.dev` URL in a private browser. The committed `.node-version` selects 24, and Pages supplies `CF_PAGES`/`CF_PAGES_URL`; no user-entered variables or secrets are required for the first deploy. Set `NEXT_PUBLIC_SITE_URL` to the actual stable project origin afterward and redeploy. No paid plan, database, custom domain, Calendly or email automation was created.
+
+## Cloudflare-specific export evidence
+
+Ran `CF_PAGES=1 CF_PAGES_URL=https://cloudflare-export-check.invalid npm run build`. The `.invalid` origin is a synthetic local-only check, not a public URL or an environment value to copy into Pages. The output contains 70 static files, including all five pages, root `404.html`, sitemap and robots. Exported canonical/social URLs used the supplied Pages build origin and Privacy named Cloudflare Pages. The stable explicit origin takes priority, as the configuration tests verify.
+
+Every exported asset is under the Pages 25 MiB limit and the file count is under its free-plan limit. The exported MP4 is byte-identical to the intended public source. No `_worker.js`, POST endpoint, server adapter or database binding is needed. Browser QA ran against these exported files using the local static preview; Cloudflare's actual remote routing/CDN and public access still need the deployment checklist.
