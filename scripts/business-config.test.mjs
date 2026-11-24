@@ -14,13 +14,17 @@ async function withConfig(values, check) {
   }
 }
 
-test('Pages auto-configures the origin, sharing image and hosting disclosure',async()=>{
+test('Pages preview and legacy Vercel URLs cannot replace the production origin',async()=>{
   await withConfig({CF_PAGES:'1',CF_PAGES_URL:'https://deployment.synthetic-pages-test.invalid',VERCEL_PROJECT_PRODUCTION_URL:'old-host.invalid'},({business,pageMetadata})=>{
     assert.equal(business.hostingProvider,'cloudflare');
-    assert.equal(business.siteUrl,'https://deployment.synthetic-pages-test.invalid');
+    assert.equal(business.siteUrl,'https://getorvanta.xyz');
     const metadata=pageMetadata('Demo','Enquiry demo','/demo/');
-    assert.equal(metadata.alternates.canonical,'https://deployment.synthetic-pages-test.invalid/demo/');
-    assert.equal(metadata.openGraph.images[0].url,'https://deployment.synthetic-pages-test.invalid/brand/social-preview.png');
+    assert.equal(metadata.alternates.canonical,'https://getorvanta.xyz/demo/');
+    assert.equal(metadata.openGraph.url,'https://getorvanta.xyz/demo/');
+    assert.equal(metadata.openGraph.siteName,'Orvanta');
+    assert.equal(metadata.openGraph.images[0].url,'https://getorvanta.xyz/brand/social-preview.png');
+    assert.equal(metadata.twitter.images[0].url,'https://getorvanta.xyz/brand/social-preview.png');
+    assert.equal(metadata.twitter.title,'Demo | Orvanta');
   });
 });
 test('the explicit stable project origin takes precedence over deployment URLs',async()=>{
@@ -30,8 +34,12 @@ test('the explicit stable project origin takes precedence over deployment URLs',
 });
 test('local builds need no host, database or integration credentials',async()=>{
   await withConfig({},({business,pageMetadata})=>{
-    assert.equal(business.siteUrl,undefined);
-    assert.equal(pageMetadata('Demo','Demo','/demo/').alternates,undefined);
+    assert.equal(business.siteUrl,'https://getorvanta.xyz');
+    assert.equal(business.hostingProvider,'cloudflare');
+    assert.equal(pageMetadata('Demo','Demo','/demo/').alternates.canonical,'https://getorvanta.xyz/demo/');
     assert.equal(business.email,'julianahonour@gmail.com');
   });
+});
+test('invalid protocols fail before incorrect metadata is exported',async()=>{
+  await assert.rejects(withConfig({NEXT_PUBLIC_SITE_URL:'ftp://invalid.example'},()=>{}),/must be an http\(s\) URL/);
 });

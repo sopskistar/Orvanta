@@ -1,24 +1,22 @@
-# Add a genuine testimonial later
+# Customer reviews and service scenarios
 
-The data file is `src/content/testimonials.ts`. It starts with an empty list. The home page's entire testimonial section returns no markup when no complete, approved reviews exist: no heading, space, placeholder, rating or logo is shown.
+The home-page component in `src/components/testimonials.tsx` always displays a useful section. When no approved reviews exist, it displays four service examples from `src/content/testimonials.ts` under “Enquiry capture in practice.” The heading is accompanied by “Illustrative service scenarios, not customer testimonials or measured results.” The examples explain after-hours capture, unanswered calls, appointment requests and quote follow-up, without invented names, star ratings or measured outcomes.
 
-Before adding a review, verify that it comes from a real client, confirm the exact quotation and attribution, and get permission to publish them. Keep consent correspondence and other private records outside this public repository. No claim should exceed the work the client actually experienced.
+No customer feedback or results were supplied for the current update. The `testimonials` array remains empty. Add genuine, complete, approved reviews to that array and the component automatically switches to “In our clients’ words.” Verify the quotation, attribution, outcome and rating with the client and obtain publication permission before setting `approved: true`. Keep consent correspondence and private draft reviews outside this public repository.
 
-Add an object to the `testimonials` array using these fields:
-
-| Field | What to enter |
+| Field | Content |
 | --- | --- |
-| `id` | A unique stable identifier for this review, not an email address. |
-| `quote` | The genuine, approved wording. |
-| `author` | The person's approved public attribution. |
-| `role` | Optional verified public role; omit if not agreed. |
-| `company` | Optional verified company attribution; omit if not agreed. |
-| `approved` | `false` while drafting; `true` only when the review and publication permission are verified. |
+| `id` | Unique stable identifier, not an email address |
+| `quote` | Exact approved quotation |
+| `author` | Approved public name |
+| `role` | Optional verified role/business type |
+| `company` | Optional approved company attribution |
+| `rating` | Optional customer-supplied integer from 1 to 5; omit if none was supplied |
+| `result` | Optional verified, approved outcome statement |
+| `approved` | `true` only after verification and publication permission |
 
-No example quote or invented person is pre-populated. An entry must have `approved: true` and nonblank id, quote and author to render. Unapproved entries are never passed to the public client interface; this component runs at build time. **Do not commit confidential draft reviews** even with `approved: false`: this is a public repository.
+Incomplete, unapproved or invalidly rated entries cannot render as reviews. React escapes names and review text. No aggregate rating or review schema is fabricated. The existing palette, Albert Sans and two-column desktop / single-column mobile grid are preserved. Ratings have accessible labels and authored SVG stars.
 
-Run `npm run test:testimonials`, `npm run lint`, `npm run typecheck`, and `npm run build`, then check desktop and mobile before committing and pushing. Because this is a static site, adding, approving or removing a review requires a deployment. To withdraw one, remove it or set `approved: false`, then redeploy.
+Run `npm run test:testimonials`, `npm run lint`, `npm run typecheck`, and `npm run build`, then check desktop/mobile. Adding or withdrawing a review requires rebuilding and deploying. To withdraw one, remove it or set `approved: false` and redeploy.
 
-The presentation inherits Orvanta's existing warm-white reading surface, Albert Sans, navy type and spacing tokens. One review spans the available width; multiple reviews use two columns on desktop and one on mobile. There is no carousel, automatic animation, stars, invented results or customer-logo field.
-
-The test suite uses explicitly synthetic fixtures in a local test harness only. They are never added to the production data file or exposed through a website route.
+The development-only synthetic review fixture is never imported by website routes or included in production data. Browser QA checks that it is absent from the export.

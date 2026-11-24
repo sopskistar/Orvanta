@@ -1,73 +1,68 @@
-# Launch Orvanta on Cloudflare Pages Free
+# Orvanta on Cloudflare Pages
 
-Cloudflare Pages is the initial host. Keep the free plan and use the included `pages.dev` address; no purchase or custom domain is needed. Neon remains a later database for private enquiry storage and automation. It is not a launch dependency.
+The production website address is **https://getorvanta.xyz**. The existing Cloudflare Pages project is `orvanta`, with included hostname `orvanta-246.pages.dev`. This remains a Next.js static export; no Worker, server adapter, Pages Function or database is required.
 
-This is the existing Next.js website, not a replacement site. The configuration already uses `output: "export"`, trailing-slash routes and unoptimized local images. `npm run build` runs `next build` and generates static files in `out/`. No adapter, Worker, Pages Function, server process or database is needed.
+## Production URL configuration
 
-Official references: [Cloudflare's static Next.js guide](https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/), [build settings](https://developers.cloudflare.com/pages/configuration/build-configuration/), [build runtime selection](https://developers.cloudflare.com/pages/configuration/build-image/).
+`src/lib/business.ts` defaults the central public origin to `https://getorvanta.xyz`. All five page canonical URLs, Open Graph page/image URLs, Twitter images, sitemap entries and robots host/sitemap references use it. Local Wrangler exports and Cloudflare builds share that default. Deployment-specific `CF_PAGES_URL` and legacy Vercel hostnames no longer select the origin.
 
-## Exact build settings
+`NEXT_PUBLIC_SITE_URL` remains an optional explicit build-time override. Remove obsolete values from local `.env*` files and Cloudflare build variables, or set it to `https://getorvanta.xyz`. Source defaults do not override an explicit environment value. Read-only Cloudflare inspection on 24 November 2026 found no `NEXT_PUBLIC_SITE_URL` override in production or preview settings. `.env.example` documents the configuration; do not commit secrets or actual `.env` files.
 
-| Dashboard setting | Value |
-| --- | --- |
-| Product | **Pages**, with Git integration |
-| Plan | Free |
-| Git repository | `sopskistar/Orvanta` |
-| Production branch | `main` |
-| Framework preset | **Next.js (Static HTML Export)** |
-| Build command | **`npm run build`** |
-| Build output directory | **`out`** |
-| Root directory | Leave blank — repository root |
-| Node version | **24**, selected by committed `.node-version` |
-| Dependency installation | Leave automatic npm installation enabled; the repository includes `package-lock.json` |
-| Deploy command / Worker entry point | None — use the Pages workflow |
+Cloudflare Pages is the default host named in Privacy, including locally built exports. The contact address stays `julianahonour@gmail.com`.
 
-Do not select the server-rendered Next.js preset, `@cloudflare/next-on-pages`, OpenNext or a Workers deployment. Do not run `next export` (the export is produced by `next build`). Do not use `.next`, `public` or `dist` as the output. `npm start` is only the local export-preview server.
+## Build and export
 
-If the dashboard requests a Wrangler deploy command, you are in the Workers flow: return and choose Pages. There is no Wrangler configuration to install for this launch.
+Use Node 24 from `.node-version`, with dependencies from `package-lock.json`:
 
-## Environment variables
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run test:config
+npm run test:testimonials
+npm run build
+```
 
-**Required user-entered environment variables for the first deployment: none. No secrets are needed.**
+`npm run build` produces `out/` through `output: "export"`. Keep trailing-slash routes, unoptimized local images and root `404.html`. Do not run `next export`, upload `.next`, or add a catch-all SPA rewrite. `npm start` previews the export locally.
 
-| Variable | Source / purpose |
-| --- | --- |
-| `CF_PAGES=1` | Automatically supplied by Pages; the app uses it to name Cloudflare Pages in Privacy. Do not add this manually. |
-| `CF_PAGES_URL` | Automatically supplied by Pages; the app uses this actual deployment URL for initial canonical, sitemap and social-image URLs. Do not invent it. |
-| `NODE_VERSION=24` | Optional dashboard override if you prefer; `.node-version` already selects 24. |
-| `NEXT_PUBLIC_SITE_URL` | Recommended **after first deploy**: the exact stable `https://<actual-project>.pages.dev` origin Pages gives you. Then redeploy. |
-| `NEXT_PUBLIC_HOSTING_PROVIDER=cloudflare` | Optional explicit override; automatic Pages detection already provides this disclosure. |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Optional; leave unset to keep `julianahonour@gmail.com`. |
+The supplied video stays unchanged at `public/demo/Orvanta_Receptionist_Demo.mp4`, copied into `out/demo/`. It is about 4.2 MiB, below Pages’ 25 MiB per-file limit.
 
-`CF_PAGES_URL` is specific to each deployment. Once you know the permanent project `pages.dev` URL, set `NEXT_PUBLIC_SITE_URL` to that origin in **Production** build variables, so canonical and sharing URLs stay stable across later deployments. If you use preview builds, give them the same production origin when you want their canonical URLs to point to production. Remove any copied Vercel hostname or old `NEXT_PUBLIC_SITE_URL` value from Pages settings.
+## GitHub automatic deployment status
 
-Public build-variable changes take effect only after another build/deployment. The `.env.example` file documents these values; real `.env` files must remain private. Do not add `DATABASE_URL`, Neon credentials, Retell keys, Resend keys, Calendly settings or a Cloudflare API token to publish this marketing site.
+Read-only inspection of the existing Cloudflare project on 24 November 2026 verified:
 
-## Exact dashboard steps
+- Source: GitHub repository `sopskistar/Orvanta`, production branch `main`.
+- `deployments_enabled: true` and `production_deployments_enabled: true`.
+- Dashboard build command: `npx next build`; output directory: `out`; root: repository root. The dashboard command runs the same Next.js build as `npm run build`.
+- Recent Cloudflare deployments cloned the repository, built and deployed successfully. Their trigger type is `ad_hoc`, so they do not establish that a new Git push triggered deployment.
+- Latest prior deployment `a6bdf437-d7c0-40fd-b27f-61611857ba76` succeeded on 24 November 2026 at 13:45 UTC for commit `b8ca2b6193b55a320ee0ce0e1f322e9e516c7931`, consistent with the supplied Wrangler history.
+- GitHub’s latest “Website checks” run for that commit passed: [run evidence](https://github.com/sopskistar/Orvanta/actions/runs/45396918262). `.github/workflows/checks.yml` validates/builds and contains no deployment step.
 
-1. Sign in to your free Cloudflare account. Open **Workers & Pages → Create application → Pages → Import an existing Git repository** (some dashboard versions say **Connect to Git**).
-2. Connect GitHub and allow access to **sopskistar/Orvanta**. Select that repository and **Begin setup**. Use an existing Pages project for this repository if you already created one.
-3. Choose a project name available to you. This determines the included stable `pages.dev` address. Do not assume the name “orvanta” is available until Cloudflare confirms it.
-4. Set production branch `main`, framework **Next.js (Static HTML Export)**, build command `npm run build`, output `out`, and leave root directory blank. Use the current build image and Node 24 from `.node-version`. Keep automatic dependency installation enabled.
-5. Leave integration/storage bindings empty. No custom domain or secret is needed. Choose **Save and Deploy**.
-6. Wait for the deployment to succeed. Open the actual URL returned by Pages. Copy the stable project URL from the project's domain/overview, not just the unique hash-prefixed deployment URL.
-7. In the project's **Settings → Variables and Secrets** (or **Environment variables**, depending on the dashboard), add the stable HTTPS origin as `NEXT_PUBLIC_SITE_URL` for **Production** builds. Redeploy/retry the latest production deployment to bake that value into metadata. No trailing page path is needed.
-8. Open the stable public URL in an incognito/private browser while signed out. It must be accessible without Cloudflare Access or an account login. Verify the checklist below, then send the home-page URL to Retell support.
+**Automatic Cloudflare deployments are configured and enabled.** A future push to `main` should trigger a production build. A fresh push-triggered deployment of this update has not been tested: this update is prepared locally, not pushed or deployed. After pushing, inspect Cloudflare’s deployment for the new commit and wait for success. If it does not trigger, inspect the Cloudflare GitHub app’s repository access and project branch/build controls. Green GitHub checks alone are not proof of publication.
 
-Future pushes to `main` trigger production deployments after the Git integration is connected. This repository being pushed does not itself prove the Cloudflare project is connected or the site is published. A completed deployment and a verified public URL establish publication. No Cloudflare account connection or purchase was performed by this repository preparation.
+Wrangler remains a valid manual fallback for this Git-integrated project:
 
-## Verify the public launch
+```bash
+npx wrangler pages deploy out --project-name=orvanta --branch=main
+```
 
-- Open `/`, `/services/`, `/demo/`, `/contact/` and `/privacy/` on desktop and phone. Follow the menu and footer links.
-- Confirm the approved navy/mint identity and **Mia — cleaning enquiry demo** heading. No testimonial heading or empty section should appear with the current empty list.
-- Press Play yourself; check picture and sound, pause, seek near the end and fullscreen. The supplied unchanged video is approximately 1:57 and does not autoplay. If needed, open `/demo/Orvanta_Receptionist_Demo.mp4` directly.
-- On Contact, click **Email Orvanta** and confirm `julianahonour@gmail.com`. If no default mail application is configured, copy the address into your email service. Checking the link is not proof of external email delivery.
-- Check Privacy names Cloudflare Pages. The website still does not submit visitor enquiry data to Retell, Neon, Resend or Calendly.
-- Open `/sitemap.xml` and `/robots.txt`. After setting the stable origin and redeploying, they should reference that real project URL. Check the social image at `/brand/social-preview.png` and favicon at `/favicon.svg`.
-- Refresh a nested page such as `/services/`. Open a nonexistent path and confirm the custom 404, rather than a duplicate home page. Pages supports the exported nested `index.html` routes and root `404.html` directly; no catch-all SPA rewrite is needed. [Pages routing documentation](https://developers.cloudflare.com/pages/configuration/serving-pages/).
+Rebuild immediately before uploading. A manual upload does not commit or push source. Record the returned deployment URL/ID and verify the public pages before calling it published. No Cloudflare settings were changed by this update.
 
-The supplied video is 4,372,102 bytes (about 4.2 MiB), below Pages' 25 MiB per-asset limit. Keep within the free plan's limits; no R2 storage purchase is needed for this file. [Pages free-plan limits](https://developers.cloudflare.com/pages/platform/limits/).
+Official references: [Git integration](https://developers.cloudflare.com/pages/configuration/git-integration/), [Direct Upload and Wrangler](https://developers.cloudflare.com/pages/get-started/direct-upload/), [static Next.js deployment](https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/).
 
-## Keep later integrations separate
+## Domain status and verification
 
-Use `docs/TESTIMONIALS.md` for a genuine approved review and `docs/AUTOMATION.md` for future Retell → Neon → transactional email work. A static export cannot accept POST webhooks or provide a private admin backend. Those require a separate, reviewed server integration later. They must not block this marketing launch or be described as operational now.
+Cloudflare’s project domain list includes `getorvanta.xyz`. That attachment is not evidence of active DNS or a working certificate. During this update, HTTPS could not resolve the hostname, and a public Cloudflare DNS-over-HTTPS A-record query returned no answer. Domain activation is **not verified**.
+
+In the existing Pages project’s Custom domains view, inspect the exact DNS record Cloudflare requests for `getorvanta.xyz` and its validation state. For this apex domain, use Cloudflare’s instructed record/flattening workflow rather than guessing an IP address. See [Cloudflare custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/). No DNS, domain or certificate setting was changed here.
+
+After activation and deployment, verify:
+
+- HTTPS opens `/`, `/services/`, `/demo/`, `/contact/` and `/privacy/` at `https://getorvanta.xyz` without signing in.
+- The new copy is present; view-source canonical/Open Graph/Twitter URLs use that origin.
+- `/sitemap.xml` lists all five routes; `/robots.txt` references the production host and sitemap.
+- Demo heading/copy, playback/seeking and `julianahonour@gmail.com` remain correct.
+- Four service scenarios are visible and labelled illustrative; genuine testimonials appear only after approval.
+- Refreshing nested routes works; an unknown URL returns the custom 404.
+
+Public access, external email receipt, live telephone service and appointment integrations are separate from export verification. This update does not establish those capabilities.

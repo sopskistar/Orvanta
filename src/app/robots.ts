@@ -3,5 +3,5 @@ import { business } from "@/lib/business";
 export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: "*", allow: "/" }, ...(business.siteUrl ? { sitemap: `${business.siteUrl}/sitemap.xml` } : {}) };
+  return { rules: { userAgent: "*", allow: "/" }, host: business.siteUrl, sitemap: `${business.siteUrl}/sitemap.xml` };
 }

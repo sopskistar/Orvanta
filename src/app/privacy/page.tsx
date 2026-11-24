@@ -1,6 +1,6 @@
 import { business, pageMetadata } from "@/lib/business";
 
-export const metadata = pageMetadata("Privacy", "How the Orvanta launch website handles website visits, email enquiries and the recorded demonstration.", "/privacy/");
+export const metadata = pageMetadata("Privacy", "How the Orvanta website handles website visits, email enquiries and the recorded demonstration.", "/privacy/");
 
 export default function Privacy() {
   const host = business.hostingProvider === "vercel" ? "Vercel" : business.hostingProvider === "cloudflare" ? "Cloudflare Pages" : "The provider hosting this website";

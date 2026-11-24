@@ -3,14 +3,26 @@ import assert from 'node:assert/strict';
 import { testimonials, approvedTestimonials } from '../src/content/testimonials.ts';
 import { renderTestimonials, syntheticReview } from './testimonial-fixture.mjs';
 
-test('launch data is empty and the entire section produces no HTML',()=>{
+test('no invented customers are published; four labelled scenarios keep the section visible',()=>{
   assert.deepEqual(testimonials,[]);
-  assert.equal(renderTestimonials(), '');
+  const html=renderTestimonials();
+  assert.match(html,/Illustrative service scenarios, not customer testimonials or measured results/);
+  assert.equal((html.match(/<article /g)||[]).length,4);
+  assert.doesNotMatch(html,/<blockquote>|<figcaption>|out of 5 stars|In our clients/);
 });
 test('unapproved and incomplete entries cannot create public review markup',()=>{
   const entries=[{...syntheticReview,approved:false},{...syntheticReview,quote:'  '},{...syntheticReview,author:''},{...syntheticReview,id:''}];
   assert.deepEqual(approvedTestimonials(entries),[]);
-  assert.equal(renderTestimonials(entries),'');
+  assert.doesNotMatch(renderTestimonials(entries),/<blockquote>|Synthetic QA fixture/);
+});
+test('only supplied and approved ratings and results appear',()=>{
+  const html=renderTestimonials([{...syntheticReview,rating:4,result:'Approved outcome fixture'}]);
+  assert.match(html,/aria-label="4 out of 5 stars"/);
+  assert.match(html,/Approved outcome fixture/);
+  assert.doesNotMatch(renderTestimonials([syntheticReview]),/out of 5 stars/);
+  for(const rating of [0,6,4.5,NaN]) {
+    assert.doesNotMatch(renderTestimonials([{...syntheticReview,rating}]),/out of 5 stars|Synthetic QA fixture/);
+  }
 });
 test('only approved complete entries render with semantic quotation and attribution',()=>{
   const html=renderTestimonials([{...syntheticReview,approved:false,quote:'PRIVATE_UNAPPROVED_FIXTURE'},syntheticReview]);

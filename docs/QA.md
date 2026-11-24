@@ -1,60 +1,49 @@
-# Launch verification
+# Production-domain update verification
 
-Cloudflare Pages preparation verified locally on 24 November 2026. This is repository verification, not evidence of a published Cloudflare deployment. Cloudflare Pages Free is the intended initial host; Neon remains only for later enquiry storage.
+Verified locally on 24 November 2026 against the production static export. This update has not been pushed or deployed. The existing Pages project was inspected read-only; no hosting, DNS or domain settings were changed.
 
-## Completed checks
+## Checks completed
 
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
-- `npm run test:config`: **3 tests passed** for automatic Pages URLs/host disclosure, stable-origin precedence and credential-free local configuration.
-- `npm run test:testimonials`: **4 tests passed**. Verified empty launch data produces no markup; unapproved/incomplete reviews stay hidden; approved review markup is semantic; review text is escaped and optional attribution stays optional.
-- `npm run build`: passed on Next.js 16.4.6, React 19.3.1, TypeScript 5.9.3 and Node 24.22.2. Home, Services, Demo, Contact, Privacy, robots, sitemap and custom 404 export into `out/`.
-- Browser QA against that production export: **154 checks passed**, zero page-runtime errors, 15 page captures and 15 distinct link targets. Evidence: local ignored `artifacts/qa/report.json` and screenshots.
-- `git diff --check`: passed. A credential-pattern scan of the intended text source/docs found no matches; Git ignores actual environment files, original Windows download, zone metadata, generated builds, dependency directories and QA captures.
+- `npm run test:config`: passed. Covers the production default, Pages preview/legacy Vercel isolation, explicit-origin override, per-page sharing metadata, credential-free builds and invalid URL protocols.
+- `npm run test:testimonials`: passed. Covers the visible labelled fallback, approval/completeness filtering, ratings/results, invalid ratings, semantic reviews, escaping and optional attribution.
+- `npm run build`: passed on Next.js 16.4.6 with Node 24.22.2; 70 static files exported into `out/`.
+- `npm run qa`: **205 checks passed**, 15 page captures, 15 distinct link targets, zero page-runtime errors. Local evidence: ignored `artifacts/qa/report.json` and screenshots. Playwright and Chromium were reused from the existing workstation installation; no dependencies were added.
+- Export inspection verified each of the five routes has its exact `https://getorvanta.xyz` canonical/Open Graph URL and absolute Open Graph/Twitter image URL. Sitemap contains all five production routes; robots advertises the production host and sitemap.
+- Every exported asset is below Pages’ 25 MiB per-file limit. Static trailing-slash routes and root `404.html` remain available.
+- `git diff --check`: passed.
 
-Next.js needs child-process access for its real TypeScript inspection, so the production checks were run outside the execution sandbox. No build/type error bypass is configured. Native Node tests emit an informational module-detection warning for the TypeScript data module; all four tests pass. No additional runtime or browser packages were installed for this update.
+Native Node reports an informational module-type detection warning for the existing TypeScript test fixture import; it did not fail the browser suite. Browser/server execution required sandbox escalation; no build checks were bypassed.
 
-## Browser and visual inspection
+## Visual and interaction inspection
 
-Used the already installed Playwright/Chromium. Captured and visually inspected desktop 1440 × 1000, tablet 768 × 1024 and phone 375 × 812, including the updated Home and Demo pages. The approved layout, palette, typography, wordmark and video remain intact. Other required pages, navigation, mailto contact, images, skip link, focus and reduced motion were checked. Additional 320/390/600/1024/1920 widths have no horizontal overflow.
+Captured the prior export at desktop 1440 × 1000, tablet 768 × 1024 and phone 375 × 812 into ignored `artifacts/qa-before/`. Inspected current desktop/mobile/tablet captures against the preserved identity. The original palette, Albert Sans, branding, hero, service cards and demo treatment remain intact. The four-step “How Orvanta works” and visible service-scenario section use the existing typography, surfaces and responsive grid.
 
-The public heading is **Mia — cleaning enquiry demo**. The specified explanatory disclaimers and other fictional-business prose are absent from rendered public pages. No paying-customer, live-phone, email-delivery or booking claim was added. Underlying demo facts remain in internal product/brand records so later edits do not turn the demonstration into false customer proof.
+The browser suite checks all five pages, one h1 per page, loaded images, canonical/sharing metadata, menus, Escape/focus handling, skip link, reduced motion, contact mailto, all internal links, 404 behavior and no-JavaScript navigation. Additional 320/390/600/1024/1920 widths have no horizontal overflow. The existing authored contrast pairs still pass 4.5:1. This is not a complete accessibility certification; physical-device, screen-reader and other browser engines were not tested.
 
-Native video checks cover controls, metadata preload, inline playback, no autoplay, decoded playback, seeking to 85 seconds, byte ranges and recovery after a deliberately aborted source request. No live Retell call or email is triggered. The contact link targets the supplied Gmail address; external email receipt is not established by checking a mailto URL.
+## Demo and contact preserved
 
-The home-page testimonial section has no DOM/heading/spacing while launch data is empty. A separate local-only HTML harness renders explicitly synthetic data to check the component's two-column desktop/tablet layout and single-column phone layout. Those captures are marked synthetic, stored in ignored `artifacts/qa/`, and never exposed through a website route. No synthetic review text is present in production HTML. The production data array stays empty. See `docs/TESTIMONIALS.md` for adding a real review with permission.
-
-Physical-device, other-browser-engine and screen-reader testing were not performed. Closed captions were not supplied or invented. Public-host access, actual sound on the visitor's device and email receipt remain part of the Cloudflare Pages dashboard/public verification checklist.
-
-## Prior design checks — interface preserved
-
-The following design-review results come from the preceding interface update. This hosting change does not edit the layout, styling, brand assets, demo copy or testimonial data. Fresh production-export screenshots were inspected as described above; no redesign or redundant design audit was introduced.
-
-- Hallmark static and rendered audit: **0 FAIL, 0 REFLEX, 7 WARN**. Five extra captures cover 1280/1440/1920 folds plus full desktop/phone pages.
-- The warnings concern existing short introductory measures, a headline max-width interpreted as another container, the approved headline/supporting-copy lengths and a 91-word screen window. Inspected renders remain readable; these are reported warnings, not a claimed warning-free result.
-- Impeccable's source detector returned **8 advisory findings**, all concerning pre-existing literal font sizes versus the documented type ramp. No new testimonial component finding or non-advisory finding was reported. The approved typography was preserved rather than changed to silence those advisories.
-- The original launch received an independent finishing-review `ship` verdict. The separate scoped visual reviewer returned **`disposition: ship`** with no material fixes after inspecting updated Home/Demo and local-only testimonial captures.
-
-## Contrast and media integrity
-
-The unchanged authored colour pairs were checked numerically. The minimum normal-text pair is website secondary text on warm white, **7.04:1**. Navy on mint is **11.38:1**, hover **13.60:1**, pressed **9.31:1**. Fine dividers are decorative, never text. The new testimonial component inherits these existing roles. This is not a claim of comprehensive WCAG certification.
-
-The supplied MP4 and intended public copy have identical SHA-256:
+`src/app/demo/page.tsx`, `src/components/demo-player.tsx`, the demo title/description, poster and MP4 are unchanged. Source and exported MP4 have identical SHA-256:
 
 ```text
 ba96e2b875704ed07448a0cf5947c21d5cbbd277da5d3e55e860e89408ffcdc0
 ```
 
-FFprobe reports 1920 × 1080 H.264, 30 fps, AAC audio, 117.121333 seconds and 4,372,102 bytes. No video, voice, font, colour, overlay or edit was changed. The original title-frame poster is preserved. No full-length human audio/sync review was repeated for this website-copy update.
+Browser checks verified native controls, metadata preload, inline playback, no autoplay, decoded playback, seeking to 85 seconds, HTTP byte ranges and recovery after deliberately aborting the source request. Contact links still target `julianahonour@gmail.com`. No email was sent and no live telephone call was initiated; external email delivery and live integrations are not established by these checks. Actual audio output was not manually reviewed again.
 
-## Upload and deployment boundary
+## Customer feedback limitation
 
-Only the reviewed implementation, public brand/video/font assets, documentation and checks are intended for GitHub. No secrets, real `.env` files, identity documents, raw recordings, account screenshots, dependency trees or local QA fixtures are in the intended commit. `.env.example` contains descriptions/public settings only.
+No genuine customer quotes, names, ratings or completed results were supplied or found. The component now remains visible with four clearly labelled illustrative service scenarios, rather than publishing invented customer proof. Approved review support includes optional genuine star ratings and outcome statements. Synthetic QA reviews remain local to the development harness and are absent from production HTML. See [TESTIMONIALS.md](TESTIMONIALS.md).
 
-A successful Git push is not a website publication. The remaining Cloudflare Pages steps are in `docs/DEPLOYMENT.md`: connect the repository, use Next.js (Static HTML Export), build with `npm run build`, publish `out`, then open the returned stable `pages.dev` URL in a private browser. The committed `.node-version` selects 24, and Pages supplies `CF_PAGES`/`CF_PAGES_URL`; no user-entered variables or secrets are required for the first deploy. Set `NEXT_PUBLIC_SITE_URL` to the actual stable project origin afterward and redeploy. No paid plan, database, custom domain, Calendly or email automation was created.
+## Deployment and domain evidence
 
-## Cloudflare-specific export evidence
+The existing Cloudflare Pages project `orvanta` is connected to GitHub `sopskistar/Orvanta`; automatic production deployments for `main` are enabled. Its current build command is `npx next build` and output directory is `out`. Production and preview have no explicit `NEXT_PUBLIC_SITE_URL` setting. Recent repository clone/build/deploy stages succeeded, but their trigger type is `ad_hoc`; a new push-triggered deployment was not tested. GitHub’s latest existing Website checks run succeeded and contains no deployment step.
 
-Ran `CF_PAGES=1 CF_PAGES_URL=https://cloudflare-export-check.invalid npm run build`. The `.invalid` origin is a synthetic local-only check, not a public URL or an environment value to copy into Pages. The output contains 70 static files, including all five pages, root `404.html`, sitemap and robots. Exported canonical/social URLs used the supplied Pages build origin and Privacy named Cloudflare Pages. The stable explicit origin takes priority, as the configuration tests verify.
+The project lists `getorvanta.xyz` as attached, but an HTTPS request could not resolve it. Cloudflare’s public DNS-over-HTTPS A-record query returned status 0 with no answer records. This does not verify DNS/certificate activation. No claim is made that the new copy is live at that address. [DEPLOYMENT.md](DEPLOYMENT.md) records the checked settings and the existing Wrangler fallback.
 
-Every exported asset is under the Pages 25 MiB limit and the file count is under its free-plan limit. The exported MP4 is byte-identical to the intended public source. No `_worker.js`, POST endpoint, server adapter or database binding is needed. Browser QA ran against these exported files using the local static preview; Cloudflare's actual remote routing/CDN and public access still need the deployment checklist.
+The source-default change makes local Wrangler exports and Cloudflare builds consistently point search/sharing metadata at `https://getorvanta.xyz`. That configuration does not activate DNS.
+
+## Existing design-tool metadata
+
+Impeccable reported an older generated design sidecar and no recorded build-path preference. Those pre-existing tool records were left outside this scoped content/metadata update; the implemented DESIGN.md and existing code remain the visual authority. Its `document` workflow can refresh the sidecar separately if requested.

@@ -25,3 +25,7 @@ Ran the real `impeccable context` launcher, wrote PRODUCT.md from the user's exp
 ## Original direction
 
 Considered a service directory, transcript-led page, portfolio, enquiry ledger, broad conversation-led studio, process poster and owner letter. Chose the conversation-led studio within the supplied navy-and-mint brand: one large headline, actual demo preview, alternating reading surfaces, asymmetric service cards and a short pilot sequence. The diagram-like O mark carries a continuation stroke. The approved video is the only proof asset. Typography, card geometry, text and implementation are original to this repository.
+
+## Production-domain and service-copy update
+
+Re-read the existing reference record, shared Framer Marketplace guidance and public Le Reve, Nuance and footer.design pages on 24 November 2026. Le Reve reinforces the existing broad typography; Nuance reinforces consistent spacing and semantic tokens; the footer gallery reinforces clear link grouping. The approved Orvanta design remains the authority: no new template, typography, imagery or animation is introduced. The visible service-scenario section reuses the existing testimonial grid and surface tokens. New baseline and final screenshots are stored in ignored `artifacts/qa-before/` and `artifacts/qa/`.

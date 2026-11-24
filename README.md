@@ -1,6 +1,6 @@
 # Orvanta
 
-Professional launch website for custom AI receptionist setup for cleaning companies, business websites and connected enquiry workflows.
+Professional service website for custom AI receptionist setup for cleaning companies, business websites and connected enquiry workflows.
 
 Built with Next.js App Router, TypeScript and React. The launch is a static export: no database, API keys or paid service is required to run it.
 
@@ -10,7 +10,7 @@ Built with Next.js App Router, TypeScript and React. The launch is a static expo
 - **Demo:** the supplied edited MP4 is copied unchanged to `public/demo/Orvanta_Receptionist_Demo.mp4`. One native player with controls, metadata preload, inline playback and no autoplay. The public heading is “Mia — cleaning enquiry demo”.
 - **Contact:** email links to `julianahonour@gmail.com`. There is no website submission form or automatic email service.
 - **Pending:** Retell telephone account verification, automatic enquiry emails and real booking. No connected webhook, database, CRM, calendar or admin view is exposed.
-- **Deployment:** Cloudflare Pages Free is the intended initial host; Neon is intended for later enquiry storage only. Prepared and tested locally; this repository is not evidence of a public deployment. Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md).
+- **Deployment:** Cloudflare Pages project `orvanta` is connected to GitHub with automatic production deployments enabled for `main`. The production website address is `https://getorvanta.xyz`; setting that address in source does not activate its DNS. Neon is intended for later enquiry storage only. Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Run on Ubuntu / WSL
 
@@ -41,7 +41,17 @@ The production output is `out/`. Use the Cloudflare Pages “Next.js (Static HTM
 
 Edit `src/lib/business.ts` for the default business email, description and demo paths. Optional public build settings are documented in `.env.example`. For local overrides, copy that file to `.env.local` and enter actual values. Never commit `.env.local` or credentials.
 
-Set `NEXT_PUBLIC_SITE_URL` to the actual public HTTPS origin after first deployment, then redeploy. This enables correct absolute social-image URLs, canonical URLs and sitemap entries. Cloudflare Pages supplies its initial deployment URL automatically. Set the stable project `pages.dev` URL explicitly after the first deploy, because individual deployment URLs differ. Without a known public URL the local build deliberately omits those URLs rather than inventing a domain.
+The central production origin defaults to **https://getorvanta.xyz** in `src/lib/business.ts`. Local Wrangler exports and Cloudflare builds use this origin for canonical URLs, Open Graph/Twitter images, sitemap entries and robots references. `CF_PAGES_URL` and legacy Vercel URLs do not override it. `NEXT_PUBLIC_SITE_URL` remains an optional explicit override; remove obsolete local/dashboard values or set it to `https://getorvanta.xyz`, then rebuild. Cloudflare Pages is the default privacy disclosure host.
+
+The customer-feedback component is visible with four clearly labelled illustrative service scenarios until genuine approved customer reviews are available. It does not publish invented customer names, ratings or results. Approved reviews support optional verified star ratings and outcome statements. See [TESTIMONIALS.md](docs/TESTIMONIALS.md).
+
+For the existing manual deployment route, build first and run:
+
+```bash
+npx wrangler pages deploy out --project-name=orvanta --branch=main
+```
+
+GitHub Actions checks alone do not deploy. The separate Cloudflare Git integration is enabled; a future push to `main` should trigger it. See [deployment evidence and domain checks](docs/DEPLOYMENT.md).
 
 ## Documentation
 

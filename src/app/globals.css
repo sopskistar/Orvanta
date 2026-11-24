@@ -168,4 +168,9 @@ button:disabled { cursor: not-allowed; color: var(--secondary); }
 .testimonial figcaption { display: flex; flex-direction: column; gap: var(--space-2xs); margin-top: var(--space-lg); }
 .testimonial-author { font-weight: 600; }
 .testimonial-attribution { color: var(--color-ink-2); font-size: var(--text-sm); }
+.testimonial-rating { display: flex; gap: var(--space-2xs); color: var(--color-ink); margin-bottom: var(--space-lg); }
+.testimonial-result { margin-top: var(--space-lg); font-weight: 600; }
+.service-scenario > p { margin-top: var(--space-md); }
+.service-scenario > .testimonial-attribution { margin-top: var(--space-xs); }
+.scenario-handoff { color: var(--color-ink-2); }
 @media (max-width: 760px) { .testimonial-list { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); } }

@@ -20,7 +20,14 @@ try {
    const response=await page.goto(base+route,{waitUntil:'networkidle'});check(`${device} ${route} HTTP 200`,response.status()===200);await page.evaluate(()=>document.fonts.ready);
    if(route==='/demo/')await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);
    check(`${device} ${route} simplified demo copy`,!/fictional|browser demonstration|edited excerpts from an actual test call|this demonstration captures an enquiry|sample home cleaning/i.test(await page.locator('body').innerText()));
-   if(route==='/')check(`${device} empty testimonials render no section`,await page.locator('.testimonials-section').count()===0);
+   if(route==='/'){
+    check(`${device} service scenarios section is visible`,await page.locator('.testimonials-section').count()===1);
+    check(`${device} four explicitly illustrative scenarios`,await page.locator('.service-scenario').count()===4&&await page.locator('.testimonials-section').innerText().then(text=>text.includes('Illustrative service scenarios, not customer testimonials or measured results.')));
+    check(`${device} How Orvanta works has four steps`,await page.locator('.pilot-section h2').innerText()==='How Orvanta works'&&await page.locator('.pilot-list li').count()===4);
+   }
+   check(`${device} ${route} production canonical URL`,await page.locator('link[rel="canonical"]').getAttribute('href')===`https://getorvanta.xyz${route}`);
+   check(`${device} ${route} Open Graph production URL`,await page.locator('meta[property="og:url"]').getAttribute('content')===`https://getorvanta.xyz${route}`);
+   check(`${device} ${route} sharing image URL`,await page.locator('meta[name="twitter:image"]').getAttribute('content')==='https://getorvanta.xyz/brand/social-preview.png');
    if(route==='/demo/')check(`${device} simple demo heading`,await page.locator('h1').innerText()==='Mia — cleaning enquiry demo');
    check(`${device} ${route} one h1`,await page.locator('h1').count()===1);
    check(`${device} ${route} no horizontal overflow`,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
