@@ -15,7 +15,8 @@ export async function preflight(env = process.env) {
   if (!schema.ready) throw new Error('Run npm run migrate first.');
   await verifyAgentAccess(env);
   await verifySender(env);
-  if(env.BOOKING_ENABLED==='true')await checkCalendar(env);
+  if(env.BOOKING_ENABLED==='true')throw new Error('Direct Google booking is retired; leave BOOKING_ENABLED=false.');
+  if(env.CALCOM_BOOKING_ENABLED==='true')await checkCalendar(env);
   return { database: 'schema_present', agents: 'allowed_agents_accessible', sender: 'verified', operational: false };
 }
 

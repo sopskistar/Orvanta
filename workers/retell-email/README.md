@@ -2,7 +2,7 @@
 
 Implemented as a separate Cloudflare Worker. **Delivery is enabled; a genuine published-agent browser-call-to-inbox acceptance test passed on 25 November 2026.** The marketing application keeps `output: "export"`; no Pages routes, public API keys or DNS changes are part of this package.
 
-The optional [demo booking extension](BOOKING.md) adds separate callback and cleaning-visit calendar appointments. It is implemented behind `BOOKING_ENABLED=false` and requires a private dedicated-calendar connection plus live calendar/inbox tests before activation. The original enquiry/email workflow remains the deployed service during setup. The user has now audibly verified Mia's published version 5 AI-first greeting; that earlier pending greeting check is complete.
+The [Cal.com demo booking extension](BOOKING.md) reuses Retell's existing Cal.com OAuth connection and the Orvanta Demo calendar. Mia's isolated V7 draft has four pinned native integration tools; the live number remains on V5 pending browser-call/calendar/enquiry-email acceptance. The Worker verifies actual tool responses and atomically stores/emails minimal booking evidence. The former direct-Google writer is permanently disabled; no Google service account or Cal.com API key is needed. Delivery stays enabled. Mia's V5 AI-first greeting is already audibly verified and preserved.
 
 ## What the code does
 
@@ -58,7 +58,7 @@ Set these privately in `.env.local`:
 
 Run `npm run check:retell` to verify that the configured agent is accessible using this key. This uses Retell's current paginated `POST /v2/list-agents` API and prints only verification flags/counts. Ordinary API access cannot prove the key has the webhook badge; confirm that badge in the dashboard, then verify an actual signed call event after deployment.
 
-Configure Mia's post-call extraction with the eight text fields listed above and one boolean `follow_up_needed`. Tell extraction to leave unknown values absent/null, preserve phone/ZIP formatting, and keep `preferred_date` about cleaning while `callback_preference` concerns contacting the customer. Do not add booking tools or claim a confirmed appointment.
+Configure Mia's post-call extraction with the eight text fields listed above and one boolean `follow_up_needed`. Tell extraction to leave unknown values absent/null, preserve phone/ZIP formatting, and keep `preferred_date` about cleaning while `callback_preference` concerns contacting the customer. Confirmed bookings are separate trusted tool evidence, never extracted booking claims. Only the reviewed Cal.com draft may use the demonstration booking tools described in [BOOKING.md](BOOKING.md).
 
 Use a **browser/web call** from Retell's dashboard; a telephone number is not required. Do not add a browser test widget or API key to the public website.
 

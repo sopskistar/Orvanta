@@ -1,14 +1,15 @@
-import {bookingConfig} from '../src/booking-config.ts';
-import {GoogleCalendar} from '../src/booking-google.ts';
+import {calcomConfig,verifyCalcomTools} from '../src/calcom-config.ts';
+import {loadConfig} from '../src/config.ts';
 import {neonSql} from '../src/store.ts';
+import {retellClient} from './retell-client.mjs';
 export async function checkCalendar(env=process.env) {
- const missing=['GOOGLE_CALENDAR_ID','GOOGLE_SERVICE_ACCOUNT_JSON','BOOKING_TIMEZONE'].filter(k=>!env[k]||env[k].startsWith('replace-with'));
- if(missing.length){console.log(JSON.stringify({missingVariables:missing}));throw new Error('calendar_configuration_missing');}
- const config=bookingConfig(env);
- await new GoogleCalendar(config).verifyCalendar();
- const sql=neonSql(env.DATABASE_URL);
- const [schema]=await sql("SELECT to_regclass('orvanta_workflow.booking_offers') IS NOT NULL AND to_regclass('orvanta_workflow.bookings') IS NOT NULL AND to_regclass('orvanta_workflow.booking_slot_claims') IS NOT NULL AS ready");
- if(!schema.ready)throw new Error('booking_migration_required');
- return {calendarVerified:true,dedicatedDemoCalendar:true,timeZone:'America/Chicago',bookingSchemaVerified:true,bookingOperational:false};
+ const c=calcomConfig(env),config=loadConfig(env),api=retellClient(env);
+ if(!config.routes.has(c.agentId))throw new Error('calcom_agent_not_allowed');
+ const app=await api('get-app/'+c.appId);
+ if(app.provider!=='calcom'||app.org_id!==config.workspaceId||app.connection_status!=='connected')throw new Error('calcom_oauth_not_connected');
+ const llm=await api(`get-retell-llm/${c.llmId}?version=${c.llmVersion}`);verifyCalcomTools(llm,c);
+ const [schema]=await neonSql(env.DATABASE_URL)("SELECT to_regclass('orvanta_workflow.calcom_booking_evidence') IS NOT NULL AS ready");
+ if(!schema.ready)throw new Error('calcom_evidence_migration_required');
+ return {calcomOAuthConnected:true,pinnedEventTypesVerified:true,testInboxRestricted:true,timeZone:c.timeZone,evidenceSchemaVerified:true,directGoogleWriterRetired:true,bookingOperational:false};
 }
-if(import.meta.url===new URL(process.argv[1],'file:').href){try{console.log(JSON.stringify(await checkCalendar()));}catch{console.error('Calendar setup check incomplete. No credentials were printed; booking is not declared operational.');process.exitCode=1;}}
+if(import.meta.url===new URL(process.argv[1],'file:').href){try{console.log(JSON.stringify(await checkCalendar()));}catch{console.error('Cal.com verification incomplete. Check CALCOM_CONFIG_JSON, the existing Retell OAuth connection and migration. No Google credentials or Cal.com API key are needed.');process.exitCode=1;}}

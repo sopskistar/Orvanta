@@ -131,7 +131,7 @@ test('booking HTTP endpoints reject invalid signatures and unknown agents and pr
  assert.equal((await handleRequest(request({call:{...call,agent_id:'agent_unknown'},args:{}},true),env,undefined,()=>store)).status,403);
  assert.equal((await (await handleRequest(request({call,args:{}},true),{...env,BOOKING_ENABLED:'false'})).json()).status,'disabled');
 });
-test('a failed booking still yields one durable enquiry and one correctly routed notification',async()=>{
+test('retired Google records cannot pollute the preserved enquiry email',async()=>{
  const [offer]=await offers();await confirm(offer,'call_synthetic',{...provider,create:async()=>{throw new CalendarError(false,'synthetic');}});
  const enquiryStore=new PostgresStore(async(text,params=[]) => (await db.query(text,params)).rows);
  const payload={event:'call_analyzed',call:{call_id:'call_synthetic',agent_id:'agent_synthetic',call_analysis:{custom_analysis_data:{customer_name:'Alex Example',preferred_date:'December 3',callback_preference:'November 27',recipient:'attacker@invalid.test',booking_status:'confirmed',provider_booking_id:'invented'}}}};
@@ -139,6 +139,6 @@ test('a failed booking still yields one durable enquiry and one correctly routed
  assert.equal(response.status,204);
  assert.equal((await db.query('SELECT * FROM orvanta_workflow.enquiries')).rows.length,1);
  const email=(await db.query('SELECT payload FROM orvanta_workflow.notification_outbox')).rows[0].payload;
- assert.match(email.text,/Booking status: failed/);assert.match(email.text,/not a confirmed booking/);assert.doesNotMatch(email.text,/invented|attacker/);assert.deepEqual(email.to,['julianahonour@gmail.com']);
+ assert.doesNotMatch(email.text,/Booking status:/);assert.match(email.text,/not a confirmed booking/);assert.doesNotMatch(email.text,/invented|attacker/);assert.deepEqual(email.to,['julianahonour@gmail.com']);
  const summary=await processBatch(enquiryStore,'synthetic',async()=>Response.json({id:'synthetic_email'}));assert.equal(summary.accepted,1);
 });

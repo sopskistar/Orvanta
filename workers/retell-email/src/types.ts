@@ -11,6 +11,8 @@ export interface Env {
   PROCESSING_TOKEN: string;
   DELIVERY_ENABLED: string;
   BOOKING_ENABLED?: string;
+  CALCOM_BOOKING_ENABLED?: string;
+  CALCOM_CONFIG_JSON?: string;
   GOOGLE_CALENDAR_ID?: string;
   GOOGLE_SERVICE_ACCOUNT_JSON?: string;
   BOOKING_TIMEZONE?: string;
@@ -28,6 +30,7 @@ export interface Enquiry {
   workspaceId: string;
   clientId: string;
   fields: EnquiryFields;
+  bookingEvidence?: import('./calcom-evidence.ts').CalcomEvidence[];
 }
 export interface Email { from: string; to: string[]; subject: string; text: string; html: string }
 export interface Job {

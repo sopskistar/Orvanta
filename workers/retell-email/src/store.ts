@@ -17,17 +17,25 @@ export class PostgresStore implements Store {
   async accept(enquiry: Enquiry, email: Email): Promise<boolean> {
     // A data-modifying CTE is one atomic Postgres statement/transaction. An
     // outbox failure rolls back the enquiry too; duplicate keys create neither.
+    const evidence=enquiry.bookingEvidence;
+    const evidenceCte=evidence===undefined?'':`, receipts AS (
+      INSERT INTO orvanta_workflow.calcom_booking_evidence
+       (enquiry_id,workspace_id,call_id,agent_id,tool_call_id,booking_type,event_type_id,status,time_zone,starts_at,ends_at,provider_booking_id,evidence_source,reason)
+      SELECT enquiry.id,$5,$3,$4,r->>'toolCallId',r->>'type',r->>'eventTypeId',r->>'status',r->>'timeZone',
+       (r->>'start')::timestamptz,(r->>'end')::timestamptz,r->>'providerBookingId',r->>'source',r->>'reason'
+      FROM enquiry CROSS JOIN jsonb_array_elements($10::jsonb) AS r RETURNING enquiry_id
+    )`;
     const rows = await this.sql(`
       WITH enquiry AS (
         INSERT INTO orvanta_workflow.enquiries
-          (id, event_type, call_id, agent_id, workspace_id, client_id, fields)
-        VALUES ($1::uuid, $2, $3, $4, $5, $6, $7::jsonb)
+          (id, event_type, call_id, agent_id, workspace_id, client_id, fields${evidence===undefined?'':', booking_evidence'})
+        VALUES ($1::uuid, $2, $3, $4, $5, $6, $7::jsonb${evidence===undefined?'':', $10::jsonb'})
         ON CONFLICT (event_type, call_id) DO NOTHING RETURNING id
-      )
+      )${evidenceCte}
       INSERT INTO orvanta_workflow.notification_outbox (id, enquiry_id, payload)
       SELECT $8::uuid, id, $9::jsonb FROM enquiry RETURNING id
     `, [enquiry.id, enquiry.eventType, enquiry.callId, enquiry.agentId, enquiry.workspaceId, enquiry.clientId,
-      JSON.stringify(enquiry.fields), crypto.randomUUID(), JSON.stringify(email)]);
+      JSON.stringify(enquiry.fields), crypto.randomUUID(), JSON.stringify(email),...(evidence===undefined?[]:[JSON.stringify(evidence)])]);
     return rows.length === 1;
   }
 

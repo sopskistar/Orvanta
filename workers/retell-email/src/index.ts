@@ -5,19 +5,16 @@ import { callIdentity, extractFields, parseEvent, readBody, RequestError } from 
 import { authorized, verifyRetell } from "./signature.ts";
 import { neonSql, PostgresStore } from "./store.ts";
 import type { Env, Store } from "./types.ts";
-import { bookingTool } from "./booking.ts";
-import { BookingStore } from "./booking-store.ts";
 import type { BookingSummary } from "./booking-types.ts";
-import { bookingConfig } from './booking-config.ts';
-import { GoogleCalendar } from './booking-google.ts';
+import {verifiedCalcomEvidence} from './calcom-evidence.ts';
+import {calcomConfig} from './calcom-config.ts';
 
 const reply = (status: number, code: string, retry = false) => Response.json({ code }, {
   status, headers: { "Cache-Control": "no-store", ...(retry ? { "Retry-After": "30" } : {}) },
 });
 const storage = (env: Env) => new PostgresStore(neonSql(env.DATABASE_URL));
 
-export async function handleRequest(request: Request, env: Env, createStore: (env: Env) => Store = storage,
-  createBookingStore: (env: Env) => BookingStore = env=>BookingStore.connect(env.DATABASE_URL)): Promise<Response> {
+export async function handleRequest(request: Request, env: Env, createStore: (env: Env) => Store = storage): Promise<Response> {
   const path = new URL(request.url).pathname;
   if (path === "/health" && request.method === "GET") return reply(200, "worker_running_not_delivery_evidence");
   const toolPath = ['/tools/booking-availability','/tools/booking-confirm','/tools/booking-decline'].includes(path);
@@ -26,12 +23,12 @@ export async function handleRequest(request: Request, env: Env, createStore: (en
   try {
     if(path==='/admin/booking-check') {
       if(!(await authorized(request.headers.get('authorization'),env.PROCESSING_TOKEN)))return reply(401,'unauthorized');
-      if(env.BOOKING_ENABLED!=='true')return reply(409,'booking_disabled');
+      if(env.CALCOM_BOOKING_ENABLED!=='true')return reply(409,'booking_disabled');
       loadConfig(env);
-      await new GoogleCalendar(bookingConfig(env)).verifyCalendar();
-      const [schema]=await neonSql(env.DATABASE_URL)("SELECT to_regclass('orvanta_workflow.booking_slot_claims') IS NOT NULL AS ready");
+      calcomConfig(env);
+      const [schema]=await neonSql(env.DATABASE_URL)("SELECT to_regclass('orvanta_workflow.calcom_booking_evidence') IS NOT NULL AS ready");
       if(!schema.ready)return reply(503,'booking_schema_unavailable');
-      return Response.json({bookingEnabled:true,dedicatedDemoCalendarVerified:true,schemaVerified:true,operational:false},{headers:{'Cache-Control':'no-store'}});
+      return Response.json({calcomEvidenceEnabled:true,directGoogleWriterRetired:true,schemaVerified:true,operational:false},{headers:{'Cache-Control':'no-store'}});
     }
     if (path === "/admin/process") {
       if (!(await authorized(request.headers.get("authorization"), env.PROCESSING_TOKEN))) return reply(401, "unauthorized");
@@ -44,7 +41,15 @@ export async function handleRequest(request: Request, env: Env, createStore: (en
     if (!env.RETELL_API_KEY) return reply(503, "webhook_not_configured", true);
     const raw = await readBody(request);
     if (!(await verifyRetell(raw, request.headers.get("x-retell-signature"), env.RETELL_API_KEY))) return reply(401, "invalid_signature");
-    if (toolPath) return Response.json(await bookingTool(raw,path,env,env.BOOKING_ENABLED==='true'?createBookingStore(env):undefined),{headers:{'Cache-Control':'no-store'}});
+    if (toolPath) {
+      let parsed:Record<string,unknown>;
+      try{parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true,ignoreBOM:false}).decode(raw));}catch{throw new RequestError(400,'invalid_json');}
+      const {call}=parseEvent(new TextEncoder().encode(JSON.stringify({event:'call_analyzed',call:parsed?.call})));
+      const {agentId}=callIdentity(call);
+      if(!loadConfig(env).routes.has(agentId))return reply(403,'agent_not_allowed');
+      // Retired permanently. No environment flag can re-enable a second writer.
+      return Response.json({status:'disabled',booked:false,enquiryCaptureContinues:true,code:'direct_google_booking_retired'},{headers:{'Cache-Control':'no-store'}});
+    }
     const { event, call } = parseEvent(raw);
     if (event !== "call_analyzed") return new Response(null, { status: 204 });
     const { callId, agentId } = callIdentity(call);
@@ -52,17 +57,10 @@ export async function handleRequest(request: Request, env: Env, createStore: (en
     const route = config.routes.get(agentId);
     if (!route) return reply(403, "agent_not_allowed");
     const fields = extractFields(call);
-    let bookings: BookingSummary[] | undefined;
-    if (env.BOOKING_ENABLED === 'true') {
-      try { bookings = await createBookingStore(env).summaries(callId,config.workspaceId); }
-      catch {
-        // A booking lookup must not discard the enquiry or invent confirmation.
-        console.error('orvanta_booking_status_unavailable');
-        bookings = (['callback','cleaning_visit'] as const).map(type=>({type,status:'review',timeZone:null,start:null,end:null,providerBookingId:null}));
-      }
-    }
+    const bookingEvidence=await verifiedCalcomEvidence(call,env);
+    const bookings:BookingSummary[]|undefined=bookingEvidence;
     await createStore(env).accept({ id: crypto.randomUUID(), eventType: "call_analyzed", callId, agentId,
-      workspaceId: config.workspaceId, clientId: route.clientId, fields }, renderEmail(fields, callId, config.from, route.recipient, bookings));
+      workspaceId: config.workspaceId, clientId: route.clientId, fields,bookingEvidence }, renderEmail(fields, callId, config.from, route.recipient, bookings));
     // No delivery promise is launched by webhook acceptance.
     return new Response(null, { status: 204 });
   } catch (error) {
@@ -77,11 +75,6 @@ export async function scheduledProcessing(env: Env, createStore: (env: Env) => S
   if (env.DELIVERY_ENABLED !== "true") return;
   loadConfig(env);
   const summary = await processBatch(createStore(env), env.RESEND_API_KEY);
-  if(env.BOOKING_ENABLED==='true') {
-    // Preserve email processing even if separate booking housekeeping is unavailable.
-    try { await BookingStore.connect(env.DATABASE_URL).markInterrupted(); }
-    catch { console.error('orvanta_booking_housekeeping_failed'); }
-  }
   console.log(JSON.stringify({ event: "outbox_batch", ...summary }));
 }
 
