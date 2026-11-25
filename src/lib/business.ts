@@ -17,8 +17,8 @@ export const business = {
   hostingProvider: process.env.NEXT_PUBLIC_HOSTING_PROVIDER || "cloudflare",
   description: "Custom AI receptionist setup for cleaning companies, business websites and connected enquiry workflows.",
   demo: {
-    path: "/demo/Orvanta_Receptionist_Demo.mp4",
-    poster: "/demo/poster.jpg",
+    path: "/demo/Orvanta_Receptionist_Demo_62049c7b.mp4",
+    poster: "/demo/poster-62049c7b.jpg",
     title: "Mia — cleaning enquiry demo",
     description: "Watch Mia collect a cleaning request and see the captured enquiry.",
   },

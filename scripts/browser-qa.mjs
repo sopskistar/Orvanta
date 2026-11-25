@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import { business } from '../src/lib/business.ts';
 import { renderTestimonials, syntheticReview } from './testimonial-fixture.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
@@ -18,7 +19,19 @@ try {
   const page=await context.newPage();page.on('pageerror',e=>report.consoleErrors.push(e.message));
   for(const route of routes){
    const response=await page.goto(base+route,{waitUntil:'networkidle'});check(`${device} ${route} HTTP 200`,response.status()===200);await page.evaluate(()=>document.fonts.ready);
-   if(route==='/demo/')await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);
+   if(route==='/demo/'){
+    await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);
+    const video=page.locator('video');
+    check(`${device} final video source`,await video.locator('source').getAttribute('src')===business.demo.path);
+    check(`${device} final video duration`,await video.evaluate(v=>Math.abs(v.duration-99.866)<0.25));
+    await video.evaluate(v=>v.play());
+    await page.waitForFunction(()=>document.querySelector('video').currentTime>0.3);
+    check(`${device} video plays inline`,await video.evaluate(v=>v.playsInline&&!v.error&&v.videoWidth===1920));
+    await video.evaluate(v=>{v.pause();v.currentTime=88;});
+    await page.waitForFunction(()=>document.querySelector('video').currentTime>=88&&document.querySelector('video').readyState>=2);
+    check(`${device} final result segment seeks`,await video.evaluate(v=>v.currentTime>=88&&!v.error));
+    check(`${device} responsive video fits`,await video.evaluate(v=>v.getBoundingClientRect().right<=innerWidth&&v.getBoundingClientRect().width>0));
+   }
    check(`${device} ${route} simplified demo copy`,!/fictional|browser demonstration|edited excerpts from an actual test call|this demonstration captures an enquiry|sample home cleaning/i.test(await page.locator('body').innerText()));
    if(route==='/'){
     check(`${device} service scenarios section is visible`,await page.locator('.testimonials-section').count()===1);
@@ -54,10 +67,10 @@ try {
  check('Native video configured correctly',await video.evaluate(v=>v.controls&&v.preload==='metadata'&&v.playsInline&&!v.autoplay));
  await video.evaluate(async v=>{await v.play();});await page.waitForFunction(()=>document.querySelector('video').currentTime>0.3);
  check('Video decodes and plays',await video.evaluate(v=>v.videoWidth===1920&&v.currentTime>0.3&&!v.error));
- await video.evaluate(v=>{v.pause();v.currentTime=85;});await page.waitForFunction(()=>document.querySelector('video').currentTime>=85&&document.querySelector('video').readyState>=2);check('Video seeks to enquiry-record segment',await video.evaluate(v=>v.currentTime>=85));
+ await video.evaluate(v=>{v.pause();v.currentTime=88;});await page.waitForFunction(()=>document.querySelector('video').currentTime>=88&&document.querySelector('video').readyState>=2);check('Video seeks to delivered-email segment',await video.evaluate(v=>v.currentTime>=88));
  await page.screenshot({path:`${dir}/demo-playing.png`});
- await page.route('**/demo/Orvanta_Receptionist_Demo.mp4',route=>route.abort());await page.goto(base+'/demo/');await page.locator('.video-error').waitFor();check('Video load failure offers recovery',await page.locator('.video-error').getByRole('link',{name:'Try opening the MP4 directly'}).isVisible());await page.unroute('**/demo/Orvanta_Receptionist_Demo.mp4');
- const media=await page.request.get(base+'/demo/Orvanta_Receptionist_Demo.mp4',{headers:{Range:'bytes=0-99'}});check('Video byte ranges supported',media.status()===206&&(await media.body()).length===100);
+ await page.route('**'+business.demo.path,route=>route.abort());await page.goto(base+'/demo/');await page.locator('.video-error').waitFor();check('Video load failure offers recovery',await page.locator('.video-error').getByRole('link',{name:'Try opening the MP4 directly'}).isVisible());await page.unroute('**'+business.demo.path);
+ const media=await page.request.get(base+business.demo.path,{headers:{Range:'bytes=0-99'}});check('Video byte ranges supported',media.status()===206&&(await media.body()).length===100);
  await page.goto(base+'/contact/');check('Contact points to supplied email',await page.getByRole('link',{name:'Email Orvanta'}).getAttribute('href').then(v=>v.startsWith('mailto:julianahonour@gmail.com')));check('No pretend contact form',await page.locator('form').count()===0);
  for(const href of urls){
   if(href.startsWith('mailto:')){report.links.push({href,status:'email link checked; no email sent'});continue;}

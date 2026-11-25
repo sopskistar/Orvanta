@@ -25,7 +25,7 @@ npm run build
 
 `npm run build` produces `out/` through `output: "export"`. Keep trailing-slash routes, unoptimized local images and root `404.html`. Do not run `next export`, upload `.next`, or add a catch-all SPA rewrite. `npm start` previews the export locally.
 
-The supplied video stays unchanged at `public/demo/Orvanta_Receptionist_Demo.mp4`, copied into `out/demo/`. It is about 4.2 MiB, below Pages’ 25 MiB per-file limit.
+The approved final edited video is `public/demo/Orvanta_Receptionist_Demo_62049c7b.mp4`, copied into `out/demo/`, with the matching `poster-62049c7b.jpg`. It is about 3.24 MiB, below Pages’ 25 MiB per-file limit. The source edit and raw/private verification files remain under Git-ignored `artifacts/`.
 
 ## GitHub automatic deployment status
 
