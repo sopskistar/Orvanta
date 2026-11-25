@@ -60,7 +60,7 @@ GitHub Actions checks alone do not deploy. The separate Cloudflare Git integrati
 - [References actually inspected](docs/DESIGN-REFERENCES.md)
 - [Verification evidence and limits](docs/QA.md)
 - [Add a genuine testimonial](docs/TESTIMONIALS.md)
-- [Later automation implementation checklist](docs/AUTOMATION.md)
+- [Coded Retell-to-email Worker and private setup](workers/retell-email/README.md)
 - [Product truth](PRODUCT.md) and [design system](DESIGN.md)
 
 ## Browser QA and asset tooling

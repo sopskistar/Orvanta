@@ -1,0 +1,32 @@
+{
+  "name": "orvanta-retell-email",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "config:init": "node scripts/init-config.mjs",
+    "config:token": "node scripts/generate-token.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "deploy": "node --env-file=.env.local scripts/deploy.mjs",
+    "deploy:disabled": "node --env-file=.env.local scripts/deploy.mjs --disabled",
+    "verify:disabled": "node --env-file=.env.local scripts/verify-disabled.mjs",
+    "check:sender": "node --env-file=.env.local scripts/check-sender.mjs",
+    "check:database": "node --env-file=.env.local scripts/check-database.mjs",
+    "check:retell": "node --env-file=.env.local scripts/check-retell.mjs",
+    "migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "preflight": "node --env-file=.env.local scripts/preflight.mjs",
+    "process": "node --env-file=.env.local scripts/process.mjs",
+    "status": "node --env-file=.env.local scripts/status.mjs"
+  },
+  "dependencies": { "@neondatabase/serverless": "1.2.1" },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261124.1",
+    "@electric-sql/pglite": "0.6.0",
+    "typescript": "^5.9.3",
+    "wrangler": "4.167.0"
+  }
+}

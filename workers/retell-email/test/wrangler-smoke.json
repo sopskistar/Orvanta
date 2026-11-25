@@ -1,0 +1,16 @@
+{
+  "name": "orvanta-retell-email-local-smoke",
+  "main": "../src/index.ts",
+  "compatibility_date": "2026-11-24",
+  "workers_dev": false,
+  "vars": {
+    "DATABASE_URL": "not-used-by-runtime-smoke",
+    "RETELL_API_KEY": "synthetic-signing-key-only",
+    "RETELL_WORKSPACE_ID": "org_synthetic",
+    "AGENT_ROUTES_JSON": "{\"agent_synthetic\":{\"clientId\":\"synthetic\",\"workspaceId\":\"org_synthetic\",\"recipient\":\"julianahonour@gmail.com\"}}",
+    "EMAIL_FROM": "enquiries@notify.getorvanta.xyz",
+    "RESEND_API_KEY": "synthetic-provider-key-only",
+    "PROCESSING_TOKEN": "synthetic-processing-token-never-use-in-production",
+    "DELIVERY_ENABLED": "false"
+  }
+}

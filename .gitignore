@@ -166,3 +166,5 @@ Orvanta_Receptionist_Demo.mp4.mp4
 .wrangler/
 .dev.vars
 .dev.vars.*
+.env.local
+.env.*.local

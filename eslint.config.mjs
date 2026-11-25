@@ -6,7 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
 export default defineConfig([
-  globalIgnores(['.next/**', 'out/**', '.hallmark/**', '.impeccable/**', 'artifacts/**']),
+  globalIgnores(['.next/**', 'out/**', '.hallmark/**', '.impeccable/**', 'artifacts/**', '**/dist/**', '**/.wrangler/**']),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { languageOptions: { globals: { ...globals.node, ...globals.browser } } },

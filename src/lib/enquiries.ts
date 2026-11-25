@@ -1,4 +1,4 @@
-/** Phase 2 contracts only. No webhook, database, sender or booking is connected. */
+/** Shared with workers/retell-email; runtime setup and live verification are separate. */
 export interface EnquiryFields {
   customer_name: string | null;
   callback_number: string | null;
@@ -20,7 +20,7 @@ export interface ClientMapping {
   timeZone: string;
 }
 
-export type NotificationState = "pending" | "processing" | "accepted" | "failed";
+export type NotificationState = "pending" | "processing" | "accepted" | "failed" | "review";
 
 export interface PersistedEnquiry {
   clientId: string;
