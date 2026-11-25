@@ -52,10 +52,15 @@ const accepted=async()=>new Response(JSON.stringify({id:'email_synthetic'}),{sta
 
 test('documented signature accepts exact raw Unicode bytes and rejects mutation, stale/future/invalid headers',async()=>{
  const raw=Buffer.from(' {"name":"Chloé 🧹"} \n');
- assert.equal(await verifyRetell(raw,sign(raw),env.RETELL_API_KEY),true);
- assert.equal(await verifyRetell(Buffer.from(raw.toString().trim()),sign(raw),env.RETELL_API_KEY),false);
- for(const signature of [null,'invalid',sign(raw,Date.now()-300_001),sign(raw,Date.now()+300_001),'v=1,d=zz',sign(raw).replace('v=','v=0')]){
-  assert.equal(await verifyRetell(raw,signature,env.RETELL_API_KEY),false);
+ // Pin the verifier's clock: real elapsed time can move a future signature
+ // from one millisecond outside the window to inside it on a busy CI runner.
+ const now=Date.now();
+ for(const timestamp of [now,now-300_000,now+300_000]){
+  assert.equal(await verifyRetell(raw,sign(raw,timestamp),env.RETELL_API_KEY,now),true);
+ }
+ assert.equal(await verifyRetell(Buffer.from(raw.toString().trim()),sign(raw,now),env.RETELL_API_KEY,now),false);
+ for(const signature of [null,'invalid',sign(raw,now-300_001),sign(raw,now+300_001),'v=1,d=zz',sign(raw,now).replace('v=','v=0')]){
+  assert.equal(await verifyRetell(raw,signature,env.RETELL_API_KEY,now),false);
  }
  assert.equal((await receive(makeRequest(sample(),{'x-retell-signature':'invalid'}))).status,401);
  assert.equal((await rows()).length,0);
