@@ -6,4 +6,6 @@ The workflow is implemented in [workers/retell-email](../workers/retell-email/RE
 
 Follow the package README for migrations, exact environment names, secret upload, retry/reconciliation behavior and the real acceptance test. Existing Zoho email DNS records must be preserved. Never add workflow secrets to the Next.js environment or browser bundle, and never send full transcripts/recordings by default.
 
-Mia's existing demo number is now pinned to published version `5`, with the AI speaking first and the existing Sample Home Cleaning demo greeting configured explicitly. The user reported a successful earlier telephone-to-inbox test. Version 5's greeting and inbound routing passed API read-back; its fresh audible greeting test is pending. No simulated ringing audio was added.
+Mia's existing demo number is pinned to published version `5`, with the AI speaking first and the existing Sample Home Cleaning demo greeting configured explicitly. The user confirmed the telephone-to-inbox test and audible version 5 greeting. No simulated ringing audio was added.
+
+The separate callback/cleaning-visit [demo booking extension](../workers/retell-email/BOOKING.md) is implemented with durable slot claims and trusted booking summaries, but remains disabled pending the private Google demo-calendar connection and real calendar/inbox verification. The working enquiry/email service stays enabled during setup.

@@ -4,12 +4,13 @@ import { preflight } from './preflight.mjs';
 
 const binary = fileURLToPath(new URL('../node_modules/wrangler/bin/wrangler.js', import.meta.url));
 const secrets = ['DATABASE_URL', 'RETELL_API_KEY', 'RETELL_WORKSPACE_ID', 'AGENT_ROUTES_JSON', 'RESEND_API_KEY', 'EMAIL_FROM', 'PROCESSING_TOKEN'];
+const bookingSettings = ['GOOGLE_CALENDAR_ID','GOOGLE_SERVICE_ACCOUNT_JSON','BOOKING_TIMEZONE','CALLBACK_DURATION_MINUTES','CLEANING_VISIT_DURATION_MINUTES'];
 function wrangler(args, input) {
   return new Promise((resolve, reject) => {
     const childEnv = { ...process.env, CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV: 'false', WRANGLER_SEND_METRICS: 'false' };
     // Runtime secrets travel only over stdin. Setup/read credentials never
     // reach the deployment subprocess or its environment/diagnostics.
-    for (const name of [...secrets, 'RESEND_SETUP_API_KEY', 'WORKFLOW_TEST_DATABASE_URL', 'WORKER_URL', 'DELIVERY_ENABLED']) delete childEnv[name];
+    for (const name of [...secrets, ...bookingSettings, 'BOOKING_ENABLED', 'RESEND_SETUP_API_KEY', 'WORKFLOW_TEST_DATABASE_URL', 'WORKER_URL', 'DELIVERY_ENABLED']) delete childEnv[name];
     const child = spawn(process.execPath, [binary, ...args], {
       stdio: ['pipe', 'inherit', 'inherit'], env: childEnv,
     });
@@ -21,11 +22,15 @@ function wrangler(args, input) {
 try {
   await preflight();
   const disabled = process.argv.includes('--disabled');
+  const preserveDelivery = process.argv.includes('--preserve-delivery');
+  if(preserveDelivery && disabled)throw new Error('cannot_preserve_and_disable_delivery');
   if (!disabled && process.env.DELIVERY_ENABLED !== 'true') throw new Error('delivery_not_explicitly_enabled');
+  const bookingEnabled = process.env.BOOKING_ENABLED === 'true';
+  const uploadedSecrets = bookingEnabled ? [...secrets,...bookingSettings] : secrets;
   // Separate Worker only: no Pages deployment, main-domain route or DNS writes.
-  await wrangler(['deploy', '--var', 'DELIVERY_ENABLED:false']);
-  await wrangler(['secret', 'bulk'], JSON.stringify(Object.fromEntries(secrets.map(name => [name, process.env[name]]))));
-  await wrangler(['deploy', '--var', `DELIVERY_ENABLED:${disabled ? 'false' : 'true'}`]);
+  if(!preserveDelivery)await wrangler(['deploy', '--var', 'DELIVERY_ENABLED:false', '--var', 'BOOKING_ENABLED:false']);
+  await wrangler(['secret', 'bulk'], JSON.stringify(Object.fromEntries(uploadedSecrets.map(name => [name, process.env[name]]))));
+  await wrangler(['deploy', '--var', `DELIVERY_ENABLED:${disabled ? 'false' : 'true'}`, '--var', `BOOKING_ENABLED:${disabled ? 'false' : String(bookingEnabled)}`]);
   console.log(`Worker deployment command completed with delivery ${disabled ? 'disabled' : 'enabled'}. Verify the returned HTTPS URL and complete the real call-to-inbox test before calling the workflow operational.`);
 } catch {
   console.error('Deployment incomplete. Check preflight, Cloudflare login and the selected deployment mode. No secret values are printed. A partially bootstrapped Worker can remain disabled.');

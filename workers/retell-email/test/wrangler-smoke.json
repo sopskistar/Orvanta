@@ -1,6 +1,6 @@
 {
   "name": "orvanta-retell-email-local-smoke",
-  "main": "../src/index.ts",
+  "main": "./booking-runtime-worker.ts",
   "compatibility_date": "2026-11-24",
   "workers_dev": false,
   "vars": {

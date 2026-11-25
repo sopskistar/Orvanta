@@ -168,3 +168,5 @@ Orvanta_Receptionist_Demo.mp4.mp4
 .dev.vars.*
 .env.local
 .env.*.local
+# Private calendar credentials and downloaded setup material.
+workers/retell-email/.private/

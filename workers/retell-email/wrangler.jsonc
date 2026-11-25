@@ -7,5 +7,5 @@
   "preview_urls": false,
   "triggers": { "crons": ["* * * * *"] },
   "observability": { "enabled": false },
-  "vars": { "DELIVERY_ENABLED": "false" }
+  "vars": { "DELIVERY_ENABLED": "false", "BOOKING_ENABLED": "false" }
 }

@@ -1,6 +1,8 @@
 # Retell → Neon → email
 
-Implemented as a separate Cloudflare Worker. **Delivery is enabled; a genuine published-agent browser-call-to-inbox acceptance test passed on 25 November 2026.** The marketing application keeps `output: "export"`; no Pages routes, public API keys, booking integration or DNS changes are part of this package.
+Implemented as a separate Cloudflare Worker. **Delivery is enabled; a genuine published-agent browser-call-to-inbox acceptance test passed on 25 November 2026.** The marketing application keeps `output: "export"`; no Pages routes, public API keys or DNS changes are part of this package.
+
+The optional [demo booking extension](BOOKING.md) adds separate callback and cleaning-visit calendar appointments. It is implemented behind `BOOKING_ENABLED=false` and requires a private dedicated-calendar connection plus live calendar/inbox tests before activation. The original enquiry/email workflow remains the deployed service during setup. The user has now audibly verified Mia's published version 5 AI-first greeting; that earlier pending greeting check is complete.
 
 ## What the code does
 
@@ -187,4 +189,4 @@ The user subsequently confirmed a successful telephone test and matching Gmail i
 - The existing number's inbound agent is the same Mia agent, pinned explicitly to version `5` at weight `1`; all other number settings are unchanged.
 - No simulated ringing sound or other audio asset was added.
 
-The separate Worker remains enabled on version `77328383-89d1-4264-9d75-a89eb21ff92a`, with the existing minute cron and recipient restriction. This Retell configuration change does not alter the database, email delivery code, static Pages deployment or DNS. The new greeting and inbound mapping are verified by API read-back; a fresh telephone call that remains silent after connection is still required to confirm the audible AI-first greeting. A new enquiry from that call can then be correlated with its single outbox entry and received email. Do not label the new greeting's telephone test passed based only on configuration read-back or the previous telephone test.
+The separate Worker remains enabled on version `77328383-89d1-4264-9d75-a89eb21ff92a`, with the existing minute cron and recipient restriction. This Retell configuration change does not alter the database, email delivery code, static Pages deployment or DNS. The greeting and inbound mapping were verified by API read-back, and the user subsequently confirmed the AI-first greeting was audibly verified. A new enquiry can still be correlated with its single outbox entry and received email; API read-back alone is not audible-call evidence.

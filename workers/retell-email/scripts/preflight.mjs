@@ -2,6 +2,7 @@ import { neonSql } from '../src/store.ts';
 import { loadConfig } from '../src/config.ts';
 import { verifyAgentAccess } from './retell-access.mjs';
 import { verifySender } from './sender-access.mjs';
+import { checkCalendar } from './check-calendar.mjs';
 
 export async function preflight(env = process.env) {
   loadConfig(env);
@@ -14,6 +15,7 @@ export async function preflight(env = process.env) {
   if (!schema.ready) throw new Error('Run npm run migrate first.');
   await verifyAgentAccess(env);
   await verifySender(env);
+  if(env.BOOKING_ENABLED==='true')await checkCalendar(env);
   return { database: 'schema_present', agents: 'allowed_agents_accessible', sender: 'verified', operational: false };
 }
 

@@ -10,6 +10,12 @@ export interface Env {
   EMAIL_FROM: string;
   PROCESSING_TOKEN: string;
   DELIVERY_ENABLED: string;
+  BOOKING_ENABLED?: string;
+  GOOGLE_CALENDAR_ID?: string;
+  GOOGLE_SERVICE_ACCOUNT_JSON?: string;
+  BOOKING_TIMEZONE?: string;
+  CALLBACK_DURATION_MINUTES?: string;
+  CLEANING_VISIT_DURATION_MINUTES?: string;
 }
 
 export interface AgentRoute { clientId: string; workspaceId: string; recipient: string }

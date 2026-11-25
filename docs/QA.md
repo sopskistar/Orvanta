@@ -1,5 +1,7 @@
 # Production-domain update verification
 
+This is the historical 24 November 2026 launch snapshot. For the subsequently deployed final MP4, current media URLs and 220 successful production browser checks, see [the final demo update](DEMO-UPDATE.md). The enquiry/email and optional calendar extension have separate verification records in the Worker documentation.
+
 Verified locally on 24 November 2026 against the production static export. This update has not been pushed or deployed. The existing Pages project was inspected read-only; no hosting, DNS or domain settings were changed.
 
 ## Checks completed
